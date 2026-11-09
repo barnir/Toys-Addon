@@ -1,0 +1,81 @@
+========================================================================
+            INSTRUÇÕES DE INSTALAÇÃO - TOYFINDER (MIDNIGHT)
+========================================================================
+
+O ToyFinder é um addon para World of Warcraft desenhado para mostrar todas 
+as Toys (brinquedos), filtrar por obtidas ou em falta, classificar por fontes
+(Vendedores, Loot, Tesouros, Missões) e fornecer links diretos do WoWhead!
+
+------------------------------------------------------------------------
+OPÇÃO 1: INSTALADOR RÁPIDO (RECOMENDADO)
+------------------------------------------------------------------------
+Basta dar duplo clique no ficheiro:
+   Install-Addon.bat
+
+Ele vai procurar automaticamente a tua pasta do World of Warcraft e 
+instalar a pasta "ToyFinder" no sítio correto.
+
+
+------------------------------------------------------------------------
+OPÇÃO 2: INSTALAÇÃO MANUAL
+------------------------------------------------------------------------
+1. Fecha o World of Warcraft se estiver aberto.
+2. Copia a pasta "ToyFinder" (que está junto a este ficheiro).
+3. Cola dentro da pasta AddOns do teu World of Warcraft:
+   
+   Caminho habitual (Retail):
+   C:\Program Files (x86)\World of Warcraft\_retail_\Interface\AddOns\
+   
+   (Se o teu jogo estiver noutro disco como D: ou E:, vai a esse disco)
+
+4. O resultado final deve ser:
+   ...\_retail_\Interface\AddOns\ToyFinder\ToyFinder.toc
+   ...\_retail_\Interface\AddOns\ToyFinder\ToyFinder_Core.lua
+   ... e restantes ficheiros.
+
+
+------------------------------------------------------------------------
+COMO USAR DENTRO DO JOGO
+------------------------------------------------------------------------
+1. Entra no WoW com qualquer personagem.
+2. Clica no ícone do ToyFinder no teu Minimapa OU escreve no chat:
+   /tf
+   (também podes usar /toyfinder ou /toys)
+
+3. Na janela:
+   - Clica nas abas superiores para ver:
+     * "Todas as Toys"
+     * "Em Falta" (ideal para colecionadores)
+     * "Já Obtidas"
+     * "Favoritas" (as tuas metas de farm)
+     * Botão "✕ Limpar Filtros" (restaura todos os filtros num só clique)
+
+   - FILTROS AVANÇADOS (Menu Dropdown com Checkmarks):
+     * 📦 FORMA DE OBTENÇÃO: Vendedores, Tesouros, Saques/Loot, Missões,
+       Conquistas, Eventos Mundiais, Profissões, Posto de Trocas
+     * 🌍 CONTINENTE: Khaz Algar (Midnight/TWW), Ilhas do Dragão,
+       Shadowlands, BfA, Legion, Draenor, Pandária, Nortúndria,
+       Terralém, Reinos do Leste, Kalimdor
+     * 📍 ZONA: Filtra especificamente por Dornogal, Ilha de Dorn,
+       Hallowfall, Valdrakken, Dalaran, Oribos, etc.
+     * ⚡ DIFICULDADE: Fácil (Compra Direta), Exploração (Tesouro),
+       Sorte/Farm (Drop), Garantido (Missão), Evento Temporário
+     * 🔃 ORDENAÇÃO: Mais Recentes, Nome A-Z, Qualidade, Em Falta
+
+   - BOTÃO "📍 Ponto no Mapa /way (TomTom)":
+     Ao clicares, cria imediatamente uma seta de GPS no teu ecrã
+     (se tiveres TomTom) a guiar-te até ao NPC ou baú!
+
+   - No painel lateral podes ler todo o guia passo a passo em português
+     sem precisar de abrir o navegador. O texto do guia tem barra de
+     rolagem (usa a roda do rato) — guias longos nunca ficam cortados.
+     Os brinquedos com guia completo + GPS mostram um badge 📖 na lista.
+     Se uma combinação de filtros não tiver resultados, aparece uma
+     mensagem no centro da lista com botão para limpar os filtros.
+     Os menus de filtro mostram a contagem de brinquedos por categoria.
+     A posição da janela fica guardada entre sessões.
+
+   - O botão WoWhead continua lá se quiseres ver guias de vídeo ou fóruns.
+
+   - BASE DE DADOS: cobre 1.180+ brinquedos com fonte/zona/NPC e 100+
+     guias completos passo a passo com coordenadas (badge 📖).
