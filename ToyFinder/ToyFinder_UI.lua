@@ -9,7 +9,7 @@ local Data = ToyFinderData
 
 local mainFrame = nil
 local rowFrames = {}
-local VISIBLE_ROWS = 10
+local VISIBLE_ROWS = 9
 local ROW_HEIGHT = 46
 
 -- Paleta de cores temática Midnight
@@ -367,6 +367,7 @@ function ToyFinderUI:CreateMainFrame()
         text:SetPoint("CENTER", btn, "CENTER", 0, 0)
         text:SetText(label)
         btn.label = text
+        btn.baseLabel = label
 
         btn:SetScript("OnClick", function(self)
             ToyFinder.activeFilter = self.filterType
@@ -390,6 +391,11 @@ function ToyFinderUI:CreateMainFrame()
 
     f.tabFavorites = CreateTabButton(filterBar, "|cffffd200" .. L.FILTER_FAVORITES .. "|r", "FAVORITES", 110)
     f.tabFavorites:SetPoint("LEFT", f.tabCollected, "RIGHT", 6, 0)
+
+    -- Contador de resultados da filtragem atual
+    local resultsLabel = filterBar:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
+    resultsLabel:SetPoint("LEFT", f.tabFavorites, "RIGHT", 14, 0)
+    f.resultsLabel = resultsLabel
 
     -- Botão Limpar Filtros
     local resetBtn = CreateFrame("Button", nil, filterBar, "BackdropTemplate")
@@ -504,6 +510,7 @@ function ToyFinderUI:CreateMainFrame()
         { id = "EVENT", name = "🎪 Eventos Mundiais e Feriados", color = "3ae374" },
         { id = "PROFESSION", name = "⚙️ Profissões (Criação)", color = "17c0eb" },
         { id = "TRADING_POST", name = "🏛️ Posto de Trocas", color = "e15f41" },
+        { id = "STORE", name = "🏪 Loja / Promoções (Blizzard)", color = "7158e2" },
         { id = "OTHER", name = "⚪ Outros / Diversos", color = "a4b0be" },
     }
 
@@ -789,6 +796,7 @@ function ToyFinderUI:CreateMainFrame()
         })
         row:SetBackdropColor(0.10, 0.07, 0.16, 0.8)
         row:SetBackdropBorderColor(0.25, 0.18, 0.35, 0.5)
+        row.baseColor = { 0.10, 0.07, 0.16, 0.8 }
 
         -- Ícone do Brinquedo
         local icon = row:CreateTexture(nil, "ARTWORK")
@@ -820,7 +828,7 @@ function ToyFinderUI:CreateMainFrame()
         -- Tag da Fonte (ex: [Vendedor], [Drop], [Tesouro])
         local sourceTag = row:CreateFontString(nil, "OVERLAY", "GameFontDisableSmall")
         sourceTag:SetPoint("LEFT", statusBadge, "RIGHT", 6, 0)
-        sourceTag:SetPoint("RIGHT", row, "RIGHT", -90, 0)
+        sourceTag:SetPoint("RIGHT", row, "RIGHT", -106, 0)
         sourceTag:SetJustifyH("LEFT")
         sourceTag:SetWordWrap(false)
         row.sourceTag = sourceTag
@@ -902,7 +910,8 @@ function ToyFinderUI:CreateMainFrame()
             if isSel then
                 self:SetBackdropColor(COLORS.rowSelected.r, COLORS.rowSelected.g, COLORS.rowSelected.b, COLORS.rowSelected.a)
             else
-                self:SetBackdropColor(0.10, 0.07, 0.16, 0.8)
+                local bc = self.baseColor or { 0.10, 0.07, 0.16, 0.8 }
+                self:SetBackdropColor(bc[1], bc[2], bc[3], bc[4])
             end
             GameTooltip:Hide()
         end)
@@ -1263,13 +1272,26 @@ end
 --------------------------------------------------------------------------------
 function ToyFinderUI:UpdateTabHighlight()
     if not mainFrame then return end
+    local nAll, nMissing, nCollected, nFav = 0, 0, 0, 0
+    for _, toy in ipairs(ToyFinder.toys or {}) do
+        nAll = nAll + 1
+        if toy.isCollected then
+            nCollected = nCollected + 1
+        else
+            nMissing = nMissing + 1
+        end
+        if toy.isFavorite then nFav = nFav + 1 end
+    end
     local tabs = {
-        { btn = mainFrame.tabAll, type = "ALL" },
-        { btn = mainFrame.tabMissing, type = "MISSING" },
-        { btn = mainFrame.tabCollected, type = "COLLECTED" },
-        { btn = mainFrame.tabFavorites, type = "FAVORITES" },
+        { btn = mainFrame.tabAll, type = "ALL", count = nAll },
+        { btn = mainFrame.tabMissing, type = "MISSING", count = nMissing },
+        { btn = mainFrame.tabCollected, type = "COLLECTED", count = nCollected },
+        { btn = mainFrame.tabFavorites, type = "FAVORITES", count = nFav },
     }
     for _, tab in ipairs(tabs) do
+        if tab.btn.label and tab.btn.baseLabel then
+            tab.btn.label:SetText(string.format("%s |cff888888(%d)|r", tab.btn.baseLabel, tab.count))
+        end
         if ToyFinder.activeFilter == tab.type then
             tab.btn:SetBackdropColor(0.35, 0.22, 0.55, 1)
             tab.btn:SetBackdropBorderColor(COLORS.accentCyan.r, COLORS.accentCyan.g, COLORS.accentCyan.b, 1)
@@ -1447,11 +1469,13 @@ function ToyFinderUI:UpdateRowContent(offset)
             end
 
             -- Destaque de Seleção
+            local base = (toyIndex % 2 == 0) and { 0.13, 0.09, 0.20, 0.8 } or { 0.10, 0.07, 0.16, 0.8 }
+            row.baseColor = base
             if ToyFinder.selectedToy and ToyFinder.selectedToy.itemID == toy.itemID then
                 row:SetBackdropColor(COLORS.rowSelected.r, COLORS.rowSelected.g, COLORS.rowSelected.b, COLORS.rowSelected.a)
                 row:SetBackdropBorderColor(COLORS.accentCyan.r, COLORS.accentCyan.g, COLORS.accentCyan.b, 1)
             else
-                row:SetBackdropColor(0.10, 0.07, 0.16, 0.8)
+                row:SetBackdropColor(base[1], base[2], base[3], base[4])
                 row:SetBackdropBorderColor(0.25, 0.18, 0.35, 0.5)
             end
         else
@@ -1652,6 +1676,12 @@ function ToyFinderUI:UpdateView()
 
     -- Estado vazio quando a combinação de filtros não devolve resultados
     local totalFiltered = #ToyFinder.filteredToys
+
+    -- Contador de resultados visíveis
+    if mainFrame.resultsLabel then
+        mainFrame.resultsLabel:SetText(string.format(L.RESULTS_COUNT, totalFiltered))
+    end
+
     if totalFiltered == 0 then
         mainFrame.emptyState:Show()
         mainFrame.scrollBar:Hide()
@@ -1660,9 +1690,10 @@ function ToyFinderUI:UpdateView()
         mainFrame.scrollBar:Show()
     end
 
-    -- Atualiza Scrollbar
+    -- Atualiza Scrollbar (volta ao topo sempre que os filtros mudam)
     local maxOffset = math.max(1, totalFiltered - VISIBLE_ROWS + 1)
     mainFrame.scrollBar:SetMinMaxValues(1, maxOffset)
+    mainFrame.scrollBar:SetValue(1)
 
     local currentOffset = math.floor(mainFrame.scrollBar:GetValue())
     if currentOffset > maxOffset then

@@ -77,6 +77,7 @@ local L_en = {
     STATS_SUMMARY = "Total: %d  |  Collected: %d  |  Missing: %d",
     SCANNING = "Scanning Toy Box... Please wait.",
     SCAN_COMPLETE = "Toy Box scan complete: %d toys indexed (%d collected, %d missing).",
+    RESULTS_COUNT = "|cff00e5ff%d|r toys shown",
     
     -- Empty state
     EMPTY_STATE_TITLE = "No toys found",
@@ -162,6 +163,7 @@ local L_pt = {
     STATS_SUMMARY = "Total: %d  |  Obtidos: %d  |  Em Falta: %d",
     SCANNING = "A analisar a Caixa de Brinquedos... Por favor aguarda.",
     SCAN_COMPLETE = "Varredura concluída: %d brinquedos indexados (%d obtidos, %d em falta).",
+    RESULTS_COUNT = "|cff00e5ff%d|r brinquedos na lista",
     
     -- Empty state
     EMPTY_STATE_TITLE = "Nenhum brinquedo encontrado",
@@ -239,6 +241,7 @@ local L_es = {
     STATS_SUMMARY = "Total: %d  |  Coleccionados: %d  |  Faltantes: %d",
     SCANNING = "Escaneando Caja de Juguetes...",
     SCAN_COMPLETE = "Escaneo completado: %d juguetes indexados (%d coleccionados, %d faltantes).",
+    RESULTS_COUNT = "|cff00e5ff%d|r juguetes en la lista",
     
     -- Empty state
     EMPTY_STATE_TITLE = "No se encontraron juguetes",
