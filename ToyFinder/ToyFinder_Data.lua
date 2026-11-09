@@ -238,7 +238,7 @@ ToyFinderData.Continents = {
         short = "Legion",
         color = "78e08f",
         zones = { "Todas as Zonas", "Dalaran (Legion)", "Azsuna", "Val'sharah", "Alta Montanha", "Trommheim", "Suramar", "Costa Partida", "Argus" },
-        patterns = { "ilhas partidas", "broken isles", "dalaran:legion", "azsuna", "val'sharah", "highmountain", "altamontanha", "stormheim", "trommheim", "suramar", "broken shore", "costa partida", "argus", "mac'aree" }
+        patterns = { "ilhas partidas", "broken isles", "dalaran:legion", "dalaran (legion)", "dalaran – legion", "azsuna", "val'sharah", "highmountain", "altamontanha", "stormheim", "trommheim", "suramar", "broken shore", "costa partida", "argus", "mac'aree" }
     },
     {
         id = "DRAENOR",
