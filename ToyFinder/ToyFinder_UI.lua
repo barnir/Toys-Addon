@@ -798,6 +798,15 @@ function ToyFinderUI:CreateMainFrame()
         row:SetBackdropBorderColor(0.25, 0.18, 0.35, 0.5)
         row.baseColor = { 0.10, 0.07, 0.16, 0.8 }
 
+        -- Barra de destaque lateral na linha selecionada
+        local accent = row:CreateTexture(nil, "OVERLAY")
+        accent:SetSize(3, ROW_HEIGHT)
+        accent:SetPoint("LEFT", row, "LEFT", 0, 0)
+        accent:SetTexture("Interface\\Buttons\\WHITE8X8")
+        accent:SetVertexColor(0.0, 0.90, 1.0, 1)
+        accent:Hide()
+        row.accent = accent
+
         -- Ícone do Brinquedo
         local icon = row:CreateTexture(nil, "ARTWORK")
         icon:SetSize(36, 36)
@@ -1474,12 +1483,15 @@ function ToyFinderUI:UpdateRowContent(offset)
             if ToyFinder.selectedToy and ToyFinder.selectedToy.itemID == toy.itemID then
                 row:SetBackdropColor(COLORS.rowSelected.r, COLORS.rowSelected.g, COLORS.rowSelected.b, COLORS.rowSelected.a)
                 row:SetBackdropBorderColor(COLORS.accentCyan.r, COLORS.accentCyan.g, COLORS.accentCyan.b, 1)
+                row.accent:Show()
             else
                 row:SetBackdropColor(base[1], base[2], base[3], base[4])
                 row:SetBackdropBorderColor(0.25, 0.18, 0.35, 0.5)
+                row.accent:Hide()
             end
         else
             row.toyData = nil
+            row.accent:Hide()
             row:Hide()
         end
     end

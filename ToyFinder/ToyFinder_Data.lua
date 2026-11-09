@@ -287,6 +287,12 @@ ToyFinderData.Continents = {
         color = "e58e26",
         zones = { "Todas as Zonas", "Orgrimmar", "Valesfíngie", "Baldios", "Tanaris", "Feralas", "Silithus", "Monte Hyjal", "Cratera de Un'Goro", "Dire Maul" },
         patterns = { "kalimdor", "orgrimmar", "durotar", "barrens", "baldios", "tanaris", "feralas", "silithus", "hyjal", "un'goro", "dire maul", "mulgore", "teldrassil", "dustwallow" }
+    },
+    {
+        id = "OTHER",
+        name = "Outras / Várias Zonas",
+        short = "Outras",
+        color = "a4b0be"
     }
 }
 
