@@ -74,11 +74,15 @@ function ToyFinder:ClassifySourceType(text)
     
     local lowerText = string.lower(text)
     
-    -- Testa primeiro os tipos mais específicos
-    for typeKey, patterns in pairs(Data.SourcePatterns) do
-        for _, pattern in ipairs(patterns) do
-            if string.find(lowerText, pattern, 1, true) then
-                return typeKey
+    -- Testa primeiro os tipos mais específicos, por ordem de prioridade fixa
+    local priority = Data.SourcePriority or { "TREASURE", "QUEST", "ACHIEVEMENT", "EVENT", "PROFESSION", "TRADING_POST", "STORE", "VENDOR", "LOOT" }
+    for _, typeKey in ipairs(priority) do
+        local patterns = Data.SourcePatterns[typeKey]
+        if patterns then
+            for _, pattern in ipairs(patterns) do
+                if string.find(lowerText, pattern, 1, true) then
+                    return typeKey
+                end
             end
         end
     end
@@ -407,7 +411,7 @@ function ToyFinder:RefreshToyStatuses()
     
     self:ApplyFilters()
     if ToyFinderUI and ToyFinderUI.UpdateView then
-        ToyFinderUI:UpdateView()
+        ToyFinderUI:UpdateView(true)
     end
 end
 
@@ -480,7 +484,9 @@ function ToyFinder:ApplyFilters()
             local sourceMatch = toy.sourceText and string.find(string.lower(toy.sourceText), query, 1, true)
             local zoneMatch = toy.zone and string.find(string.lower(toy.zone), query, 1, true)
             local targetMatch = toy.target and string.find(string.lower(toy.target), query, 1, true)
-            passSearch = (nameMatch or idMatch or sourceMatch or zoneMatch or targetMatch)
+            local coordsMatch = toy.coords and string.find(string.lower(toy.coords), query, 1, true)
+            local guideMatch = toy.dbData and toy.dbData.guide and string.find(string.lower(toy.dbData.guide), query, 1, true)
+            passSearch = (nameMatch or idMatch or sourceMatch or zoneMatch or targetMatch or coordsMatch or guideMatch)
         end
         
         if passStatus and passSource and passContinent and passZone and passDifficulty and passSearch then
