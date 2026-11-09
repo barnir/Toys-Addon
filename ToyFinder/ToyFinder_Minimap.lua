@@ -84,6 +84,7 @@ function ToyFinderMinimap:CreateButton()
             if ToyFinderUI and ToyFinderUI.UpdateView then
                 ToyFinderUI:UpdateView()
             end
+            print("|cff9d4eddToyFinder:|r Filtro: " .. (ToyFinder.activeFilter == "MISSING" and "|cffff5252Em Falta|r" or "|cff3ae374Todas|r"))
             PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON)
         end
     end)

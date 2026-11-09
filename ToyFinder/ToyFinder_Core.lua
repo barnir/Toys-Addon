@@ -334,6 +334,7 @@ function ToyFinder:ScanAllToys()
                 icon = icon,
                 quality = quality,
                 isCollected = isCollected,
+                isWowFavorite = isFav,
                 isFavorite = isCustomFav,
                 sourceText = sourceText,
                 sourceType = sourceType,
@@ -390,7 +391,7 @@ function ToyFinder:RefreshToyStatuses()
     
     for _, toy in ipairs(self.toys) do
         toy.isCollected = PlayerHasToy(toy.itemID)
-        toy.isFavorite = ToyFinderDB.favorites[toy.itemID] or false
+        toy.isFavorite = ToyFinderDB.favorites[toy.itemID] or toy.isWowFavorite or false
         if toy.isCollected then
             collectedCount = collectedCount + 1
         else
@@ -552,7 +553,14 @@ SlashCmdList["TOYFINDER"] = function(msg)
     elseif cmd == "missing" or cmd == "falta" then
         ToyFinder.activeFilter = "MISSING"
         ToyFinder:ApplyFilters()
-        if ToyFinderUI then ToyFinderUI:Toggle() end
+        if ToyFinderUI then
+            local f = ToyFinderUI:CreateMainFrame()
+            if f and not f:IsShown() then
+                ToyFinderUI:Toggle()
+            else
+                ToyFinderUI:UpdateView()
+            end
+        end
     elseif cmd == "help" or cmd == "ajuda" then
         print("|cff9d4edd--- ToyFinder Comandos ---|r")
         print("|cff00e5ff/tf|r ou |cff00e5ff/toyfinder|r - Abre ou fecha a janela principal.")
