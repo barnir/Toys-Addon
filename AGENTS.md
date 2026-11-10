@@ -112,12 +112,31 @@ EscalateErrorDuringLoad, LoadFirst, UseSecureEnvironment.
 - Frame pools: `CreateFramePool("Frame", parent, template)`
 - Hooks: `hooksecurefunc("Func", postHook)` / `hooksecurefunc(object, "Method", postHook)`
 
-## Verification
+## API reference & verification
 
-Before using any API, verify it exists in Patch 12.0.1; if unsure, flag it for
-verification against warcraft.wiki.gg/wiki/API_FunctionName. Reference guide:
-https://www.better-addons.com/ai-coding-guide/ (Golden Rules, Deprecated Function Map,
-verification checklist, system prompt).
+Primary reference (official): **[World of Warcraft API](https://warcraft.wiki.gg/wiki/World_of_Warcraft_API)**
+— index of all API systems (`Category:API_systems/<Name>`), per-function pages
+`API_<FunctionName>`, `Global functions` list, `Widget API` (frames/tooltips/widgets),
+`Events`, and `Patch X/API changes` pages. Always check the relevant
+`Patch 12.0.x/API changes` page before using an API. Secondary mirror:
+https://www.better-addons.com/api-cheatsheet (also hosts the AI coding guide).
+
+Rule: before using any API, verify it exists in Patch 12.0.1 at
+warcraft.wiki.gg/wiki/API_FunctionName; if unsure, flag it for verification.
+
+### APIs used by ToyFinder (verified against warcraft.wiki.gg, 12.0.1)
+
+| API | Notes |
+|---|---|
+| `C_ToyBox.GetToyInfo(itemID)` | multiple returns: `_, name, icon, isFav, hasFanfare, quality` (NOT a table) |
+| `C_ToyBox.GetToyFromIndex`, `GetNumFilteredToys`, `SetFilterString`/`GetFilterString`, `SetCollectedShown`/`SetUncollectedShown`/`SetUnusableShown`, `SetAllExpansionTypeFilters`, `SetAllSourceTypeFilters`, `GetToyLink` | ToyBox system |
+| `C_TooltipInfo.GetToyByItemID(itemID)` | returns TooltipData table with `.lines[].leftText` (may be Secret Values — guard with `issecretvalue`) |
+| `C_Item.RequestLoadItemDataByID(itemID)` | async; pair with `ITEM_DATA_LOAD_RESULT` |
+| `PlayerHasToy(itemID)` | still exists in 12.0.1 |
+| `GameTooltip:SetToyByItemID(itemID)` | Widget API |
+| `C_Timer.After` / `NewTimer` / `NewTicker` | timers |
+| `PlaySound(SOUNDKIT.*)` | still exists in 12.0 (`PlaySoundKitID` alternative) |
+| `hooksecurefunc`, `CreateFrame`, `CreateFramePool`, `SlashCmdList` | engine patterns |
 
 ## How to attach an external agent's rules (e.g. a Claude agent)
 
