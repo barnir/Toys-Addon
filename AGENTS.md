@@ -58,6 +58,11 @@ addon em `ToyFinder/README.md` e `COMO-INSTALAR.txt` — manter sincronizada.
 - `UnitAura()` → `C_UnitAuras.GetAuraDataByIndex()` (AuraData TABLE)
 - `UnitBuff()` → `C_UnitAuras.GetBuffDataByIndex()` (AuraData TABLE)
 - `UnitDebuff()` → `C_UnitAuras.GetDebuffDataByIndex()` (AuraData TABLE)
+- `IsSpellKnown(id)` → `C_Spell.IsSpellDataCached(id)` (behavior changed)
+- `GetSpecializationInfo(id)` → `C_SpecializationInfo.GetSpecializationInfo(id)`
+- `GetTalentInfo(tier, col, group)` → `C_ClassTalents` + talent tree APIs (reworked)
+- `SendChatMessage()` in instances → **restricted** (messages become Secret Values in 12.0)
+- `CombatLogGetCurrentEventInfo()` → **REMOVED, no replacement** (no CLEU for addons)
 
 When a `C_*` function returns a table, access fields: `local info = C_Spell.GetSpellInfo(id)`
 then `info.name`, `info.iconID`. Do NOT unpack multiple returns from table-returning APIs.
@@ -86,7 +91,9 @@ Modules/Module1.lua
 ## Verification
 
 Before using any API, verify it exists in Patch 12.0.1; if unsure, flag it for
-verification against warcraft.wiki.gg/wiki/API_FunctionName.
+verification against warcraft.wiki.gg/wiki/API_FunctionName. Reference guide:
+https://www.better-addons.com/ai-coding-guide/ (Golden Rules, Deprecated Function Map,
+verification checklist, system prompt).
 
 ## How to attach an external agent's rules (e.g. a Claude agent)
 
@@ -96,7 +103,14 @@ instructions for any agent working on these files. This repo already carries the
 Claude Code agent definitions, whose rules are adopted below:
 
 - [WoWAddon-Expert.md](WoWAddon-Expert.md) — worker agent (full WoW addon expertise, Secret Values reference)
-- [wow.md](wow.md) — coordinator agent (`/wow`)
+- [wow.md](wow.md) — coordinator command (`/wow`)
+- Specialized agents (from https://www.better-addons.com/ai-coding-guide/):
+  - [agents/wow-addon-researcher.md](agents/wow-addon-researcher.md) — verified API research (warcraft.wiki.gg, Gethe/wow-ui-source, wago.tools), never hallucinates
+  - [agents/wow-addon-coder.md](agents/wow-addon-coder.md) — writes Midnight-correct code (C_* namespaces, table dispatch, SavedVariables, combat checks)
+  - [agents/wow-addon-news-desk.md](agents/wow-addon-news-desk.md) — tracks API changes, hotfixes, blue posts, Secret Values findings
+
+  In Claude Code these live in `.claude/agents/`. In this CLI (Mistral Vibe) the equivalent is
+  spawning a sub-agent (`agents.spawn`) with the agent file's content as the task prompt.
 
 ### Additional rules adopted from the Claude agent (WoWAddon-Expert.md)
 
