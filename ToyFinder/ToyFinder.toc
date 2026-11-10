@@ -4,7 +4,7 @@
 ## Notes-ptBR: Mostra todos os Brinquedos do jogo, se já os tem ou não, fontes de obtenção (Vendedores, Saque, Tesouros) e links diretos do WoWhead!
 ## Notes-esES: Muestra todos los juguetes del juego, si ya los tienes o no, fuentes de obtención (Vendedores, Botín, Tesoros) y enlaces directos a WoWhead.
 ## Author: Francisco
-## Version: 1.4.0
+## Version: 1.5.0
 ## Category: Miscellaneous
 ## X-Website: https://github.com/barnir/Toys-Addon
 ## SavedVariables: ToyFinderDB

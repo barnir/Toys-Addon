@@ -138,23 +138,8 @@ warcraft.wiki.gg/wiki/API_FunctionName; if unsure, flag it for verification.
 | `PlaySound(SOUNDKIT.*)` | still exists in 12.0 (`PlaySoundKitID` alternative) |
 | `hooksecurefunc`, `CreateFrame`, `CreateFramePool`, `SlashCmdList` | engine patterns |
 
-## How to attach an external agent's rules (e.g. a Claude agent)
 
-There is no plugin to "attach" a Claude agent to this CLI agent. Instead: drop the
-agent's instruction file in this repo — repo `AGENTS.md` files are active
-instructions for any agent working on these files. The original Claude Code agent
-files (`WoWAddon-Expert.md` worker, `wow.md` `/wow` coordinator — from
-[Amadeus-/WoWAddonDevGuide](https://github.com/Amadeus-/WoWAddonDevGuide/tree/master/Claude%20AI%20Commands%20(optional))
-were removed from this repo because the user does not use Claude Code; their rules are
-adopted in the section below. Specialized agents (from https://www.better-addons.com/ai-coding-guide/):
-  - [agents/wow-addon-researcher.md](agents/wow-addon-researcher.md) — verified API research (warcraft.wiki.gg, Gethe/wow-ui-source, wago.tools), never hallucinates
-  - [agents/wow-addon-coder.md](agents/wow-addon-coder.md) — writes Midnight-correct code (C_* namespaces, table dispatch, SavedVariables, combat checks)
-  - [agents/wow-addon-news-desk.md](agents/wow-addon-news-desk.md) — tracks API changes, hotfixes, blue posts, Secret Values findings
-
-  In Claude Code these live in `.claude/agents/`. In this CLI (Mistral Vibe) the equivalent is
-  spawning a sub-agent (`agents.spawn`) with the agent file's content as the task prompt.
-
-### Additional rules adopted from the Claude agent (WoWAddon-Expert.md)
+### Additional rules adopted from the agent (WoWAddon-Expert.md)
 
 - **No semicolons in Lua** — write `print("x")` not `print("x");` (WoW convention).
 - **NEVER `print()` for debug output** — debug goes to a scrollable, copy-pasteable

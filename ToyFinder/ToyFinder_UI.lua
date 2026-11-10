@@ -868,9 +868,9 @@ function ToyFinderUI:CreateMainFrame()
             end
         end)
 
-        -- Badge de Guia Completo (📖 com GPS) ao lado do botão WoWhead
-        local guideBadge = row:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
-        guideBadge:SetPoint("RIGHT", wowheadRowBtn, "LEFT", -3, 0)
+        -- Badge de Guia Completo (📖 com GPS) no canto superior direito do ícone
+        local guideBadge = row:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
+        guideBadge:SetPoint("TOPRIGHT", icon, "TOPRIGHT", 4, 4)
         guideBadge:SetText("|cffffd200📖|r")
         guideBadge:Hide()
         row.guideBadge = guideBadge
@@ -1546,7 +1546,8 @@ function ToyFinderUI:UpdateSelectedToyDetails()
     local qColor = Data.QualityColors[toy.quality] or Data.QualityColors[1]
     mainFrame.dIconBorder:SetVertexColor(qColor.r, qColor.g, qColor.b)
     mainFrame.dName:SetText(string.format("|cff%s%s|r", qColor.hex, toy.name))
-    mainFrame.dMeta:SetText(string.format("Item ID: |cffffd200%d|r  |  Qualidade: |cff%s%s|r", toy.itemID, qColor.hex, qColor.name))
+    local expStr = (toy.dbData and toy.dbData.expansion and toy.dbData.expansion ~= "") and string.format("  |  Expansão: |cff9d4edd%s|r", toy.dbData.expansion) or ""
+    mainFrame.dMeta:SetText(string.format("Item ID: |cffffd200%d|r  |  Qualidade: |cff%s%s|r%s", toy.itemID, qColor.hex, qColor.name, expStr))
 
     -- Banner de Status
     if toy.isCollected then

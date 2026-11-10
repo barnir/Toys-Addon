@@ -78,6 +78,21 @@ end
 --------------------------------------------------------------------------------
 -- PARSER DE FONTES & TOOLTIP (Vendedores, Loot, Tesouros, Missões)
 --------------------------------------------------------------------------------
+-- Rótulos que o cliente usa na linha "Fonte:/Source:" — parsing determinístico
+-- antes de qualquer scan de palavras-chave (evita classificações erradas quando o
+-- texto contém várias palavras-chave, ex.: "Evento mundial com missões diárias")
+local SOURCE_LABELS = {
+    { "posto de trocas", "TRADING_POST" }, { "trading post", "TRADING_POST" }, { "puesto comercial", "TRADING_POST" },
+    { "evento mundial", "EVENT" }, { "world event", "EVENT" }, { "evento del mundo", "EVENT" }, { "weltereignis", "EVENT" }, { "evento", "EVENT" },
+    { "tesouro", "TREASURE" }, { "treasure", "TREASURE" }, { "tesoro", "TREASURE" }, { "schatz", "TREASURE" }, { "trésor", "TREASURE" },
+    { "conquista", "ACHIEVEMENT" }, { "achievement", "ACHIEVEMENT" }, { "logro", "ACHIEVEMENT" }, { "erfolg", "ACHIEVEMENT" }, { "haut fait", "ACHIEVEMENT" },
+    { "profissão", "PROFESSION" }, { "profissao", "PROFESSION" }, { "profession", "PROFESSION" }, { "beruf", "PROFESSION" }, { "profesión", "PROFESSION" },
+    { "missão", "QUEST" }, { "missao", "QUEST" }, { "quest", "QUEST" }, { "misión", "QUEST" }, { "mision", "QUEST" }, { "quête", "QUEST" }, { "aufgabe", "QUEST" },
+    { "vendedor", "VENDOR" }, { "vendido", "VENDOR" }, { "sold by", "VENDOR" }, { "vendor", "VENDOR" }, { "verkäufer", "VENDOR" }, { "vendeur", "VENDOR" },
+    { "saque", "LOOT" }, { "despojado", "LOOT" }, { "dropped", "LOOT" }, { "drop", "LOOT" }, { "loot", "LOOT" }, { "butin", "LOOT" }, { "beute", "LOOT" }, { "botín", "LOOT" },
+    { "loja", "STORE" }, { "store", "STORE" }, { "tienda", "STORE" }, { "shop", "STORE" },
+}
+
 function ToyFinder:ClassifySourceType(text)
     if not text or text == "" then
         return "OTHER"
@@ -85,7 +100,18 @@ function ToyFinder:ClassifySourceType(text)
     
     local lowerText = string.lower(text)
     
-    -- Testa primeiro os tipos mais específicos, por ordem de prioridade fixa
+    -- 1) Tenta o rótulo explícito depois de "Fonte:"/"Source:" (mais fiável)
+    local afterColon = lowerText:match(":%s*(.+)$")
+    if afterColon then
+        for _, entry in ipairs(SOURCE_LABELS) do
+            local label = entry[1]
+            if afterColon:sub(1, #label) == label then
+                return entry[2]
+            end
+        end
+    end
+    
+    -- 2) Fallback: scan de palavras-chave por ordem de prioridade fixa
     local priority = Data.SourcePriority or { "TREASURE", "QUEST", "ACHIEVEMENT", "EVENT", "PROFESSION", "TRADING_POST", "STORE", "VENDOR", "LOOT" }
     for _, typeKey in ipairs(priority) do
         local patterns = Data.SourcePatterns[typeKey]

@@ -77,5 +77,5 @@ COMO USAR DENTRO DO JOGO
 
    - O botão WoWhead continua lá se quiseres ver guias de vídeo ou fóruns.
 
-   - BASE DE DADOS: cobre 1.180+ brinquedos com fonte/zona/NPC e 100+
+   - BASE DE DADOS: cobre 1.150+ IDs únicos (144 guias completos com GPS + entradas MassDB com fonte/zona/NPC/expansão)
      guias completos passo a passo com coordenadas (badge 📖).

@@ -46,7 +46,7 @@ O **ToyFinder** é um addon completo e moderno para World of Warcraft (preparado
      - Repõe todas as seleções no estado inicial com 1 clique!
 
 4. **Base de Dados Offline Integrada & TomTom (/way)**:
-   - **Mais de 1.180 brinquedos cobertos**; **mais de 100 com guia passo a passo completo em Português** (NPCs, custos, coordenadas GPS).
+   - **Mais de 1.150 IDs únicos cobertos (144 guias completos + 1.043 entradas MassDB);
    - As entradas da base de dados em massa são geradas a partir de dados da comunidade (ToyBoxEnhanced + EliteGrindLab) e as guias completos são curadas manualmente e com agentes de pesquisa que verificam fontes no WoWhead/WowDB/Wowpedia.
    - Inclui coordenadas GPS precisas e botão `[ 📍 Ponto no Mapa /way (TomTom) ]` que cria uma seta no ecrã automaticamente!
    - O painel do guia tem **barra de rolagem**: guias longos nunca ficam cortados.
