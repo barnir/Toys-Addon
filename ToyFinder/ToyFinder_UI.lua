@@ -1621,6 +1621,12 @@ function ToyFinderUI:UpdateSelectedToyDetails()
         if toy.dbData and toy.dbData.target and toy.dbData.target ~= "" then
             zoneStr = zoneStr .. string.format("\n|cffffffffTarget / NPC:|r |cffffffff%s|r", toy.dbData.target)
         end
+        if toy.dbData and toy.dbData.cost and toy.dbData.cost ~= "" then
+            zoneStr = zoneStr .. string.format("\n|cffffffffCost:|r |cffffd200%s|r", toy.dbData.cost)
+        end
+        if toy.dbData and toy.dbData.profession and toy.dbData.profession ~= "" then
+            zoneStr = zoneStr .. string.format("\n|cffffffffProfession:|r |cff17c0eb%s|r", toy.dbData.profession)
+        end
         sourceExplanation = string.format(
             "|cffffffffDifficulty:|r %s%s\n" ..
             "|cffffffffWhat to do:|r |cffffffff%s|r\n\n" ..

@@ -1,0 +1,7 @@
+* text=auto
+*.lua text eol=lf
+*.toc text eol=lf
+*.md text eol=lf
+*.txt text eol=crlf
+*.bat text eol=crlf
+*.zip -text
