@@ -170,6 +170,12 @@ ToyFinderData.SourcePatterns = {
     }
 }
 
+-- Ordem de prioridade para classificação de fontes (mais específico primeiro).
+-- Evita que o resultado dependa da ordem aleatória do pairs().
+ToyFinderData.SourcePriority = {
+    "TREASURE", "QUEST", "ACHIEVEMENT", "EVENT", "PROFESSION", "TRADING_POST", "STORE", "VENDOR", "LOOT",
+}
+
 -- Cores de Qualidade de Item Padrão (WoW Standard)
 ToyFinderData.QualityColors = {
     [0] = { hex = "9d9d9d", r = 0.62, g = 0.62, b = 0.62, name = "Pobre" },

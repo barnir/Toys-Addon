@@ -1671,7 +1671,7 @@ end
 --------------------------------------------------------------------------------
 -- ATUALIZAÇÃO GERAL DA VIEW (Progresso, Scrollbar e Linhas)
 --------------------------------------------------------------------------------
-function ToyFinderUI:UpdateView()
+function ToyFinderUI:UpdateView(keepScroll)
     if not mainFrame or not mainFrame:IsShown() then return end
 
     -- Atualiza Barra de Progresso
@@ -1702,10 +1702,12 @@ function ToyFinderUI:UpdateView()
         mainFrame.scrollBar:Show()
     end
 
-    -- Atualiza Scrollbar (volta ao topo sempre que os filtros mudam)
+    -- Atualiza Scrollbar (volta ao topo quando os filtros mudam, a menos que keepScroll)
     local maxOffset = math.max(1, totalFiltered - VISIBLE_ROWS + 1)
     mainFrame.scrollBar:SetMinMaxValues(1, maxOffset)
-    mainFrame.scrollBar:SetValue(1)
+    if not keepScroll then
+        mainFrame.scrollBar:SetValue(1)
+    end
 
     local currentOffset = math.floor(mainFrame.scrollBar:GetValue())
     if currentOffset > maxOffset then
