@@ -1652,8 +1652,10 @@ function ToyFinderUI:UpdateSelectedToyDetails()
         if data and data.lines then
             local linesFound = {}
             for _, line in ipairs(data.lines) do
+                -- 12.0+: line.leftText pode ser Secret Value — guardar antes de qualquer operação de string
                 local txt = line.leftText
-                if txt and txt ~= "" and not txt:find("^Fonte:") and not txt:find("^Source:") and not txt:find(toy.name) then
+                if txt ~= nil and issecretvalue and issecretvalue(txt) then txt = nil end
+                if txt and txt ~= "" and not txt:find("^Fonte:") and not txt:find("^Source:") and not txt:find(toy.name or "") then
                     table.insert(linesFound, txt)
                 end
             end

@@ -48,6 +48,14 @@ local function stripColors(text)
     return text:gsub("|c%x%x%x%x%x%x%x%x", ""):gsub("|r", ""):gsub("|T.-|t", ""):gsub("|H.-|h", ""):gsub("|h", "")
 end
 
+-- 12.0+: textos de tooltip (C_TooltipInfo line.leftText / FontString:GetText) podem ser
+-- Secret Values — nunca fazer operações de string sobre eles; devolver nil nesse caso
+local function SafeText(value)
+    if value == nil then return nil end
+    if issecretvalue and issecretvalue(value) then return nil end
+    return value
+end
+
 --------------------------------------------------------------------------------
 -- INICIALIZAÇÃO E BANCO DE DADOS (SAVED VARIABLES)
 --------------------------------------------------------------------------------
@@ -127,7 +135,7 @@ function ToyFinder:ExtractToySource(itemID)
         local data = C_TooltipInfo.GetToyByItemID(itemID)
         if data and data.lines then
             for _, line in ipairs(data.lines) do
-                local text = line.leftText
+                local text = SafeText(line.leftText)
                 if text and text ~= "" then
                     local clean = trim(stripColors(text))
                     -- Padrões comuns de fonte na tooltip do WoW
@@ -147,7 +155,7 @@ function ToyFinder:ExtractToySource(itemID)
         for i = 1, scanTooltip:NumLines() do
             local left = _G["ToyFinderScanTooltipTextLeft" .. i]
             if left then
-                local text = left:GetText()
+                local text = SafeText(left:GetText())
                 if text and text ~= "" then
                     local clean = trim(stripColors(text))
                     if clean:find("^Source:") or clean:find("^Fonte:") or clean:find("^Fuente:") or clean:find("^Quelle:") or clean:find("^Source%s*:") then

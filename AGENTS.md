@@ -91,7 +91,32 @@ verification against warcraft.wiki.gg/wiki/API_FunctionName.
 ## How to attach an external agent's rules (e.g. a Claude agent)
 
 There is no plugin to "attach" a Claude agent to this CLI agent. Instead: drop the
-agent's instruction file in this repo (e.g. replace/extend this `AGENTS.md`, or add
-`docs/AGENT.md` and reference it here) — repo `AGENTS.md` files are active
-instructions for any agent working on these files. Alternatively paste the rules in
-chat. Sub-agents spawned for research tasks receive these rules in their prompt.
+agent's instruction file in this repo — repo `AGENTS.md` files are active
+instructions for any agent working on these files. This repo already carries the
+Claude Code agent definitions, whose rules are adopted below:
+
+- [WoWAddon-Expert.md](WoWAddon-Expert.md) — worker agent (full WoW addon expertise, Secret Values reference)
+- [wow.md](wow.md) — coordinator agent (`/wow`)
+
+### Additional rules adopted from the Claude agent (WoWAddon-Expert.md)
+
+- **No semicolons in Lua** — write `print("x")` not `print("x");` (WoW convention).
+- **NEVER `print()` for debug output** — debug goes to a scrollable, copy-pasteable
+  EditBox debug window (saved-variable log + `/addondebug` slash command). Current
+  `print()` calls in ToyFinder are user-facing status messages, not debug output.
+- **Secret Values (12.0+)**: guard with `issecretvalue()` BEFORE any string operation
+  on tooltip text (`C_TooltipInfo` `line.leftText`, `FontString:GetText()`); secrets
+  appear in ANY tainted context, not just combat. `FontString:SetText()` accepts
+  secrets natively. Use `UnitHealthPercent`/`UnitPowerPercent` for arithmetic.
+- Check APIs exist before using (`C_SomeAPI.SomeFunction ~= nil`); prefer `C_*`
+  namespaces (`C_ActionBar`, `C_CombatLog`, `C_DamageMeter` — never parse combat log).
+- Localize global lookups at file top (`local string = string` etc.).
+- Never create global frame names that conflict with Blizzard UI; never name frames
+  parented to secure Blizzard containers.
+- Markdown files: use clickable links for cross-file refs (`[file.md](file.md)`) and
+  `[Section](#section)` for intra-file refs.
+- Paths in guides must be relative; only agent config files hold absolute paths
+  (user config: AddOns at `D:\Games\World of Warcraft\_retail_\Interface\AddOns`).
+- Mixin pattern (`MyAddonMixin` with `OnLoad`/`OnEvent` dispatch via `self[event]`)
+  is the modern Blizzard style; this repo's `ns` namespace pattern is equivalent.
+- Indentation: keep consistent within each file (existing ToyFinder files use 4 spaces).

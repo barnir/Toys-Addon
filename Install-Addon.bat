@@ -33,6 +33,8 @@ if exist "C:\Program Files (x86)\World of Warcraft\_retail_\Interface\AddOns" (
     set "TARGET_DIR=E:\World of Warcraft\_retail_\Interface\AddOns"
 ) else if exist "D:\Games\World of Warcraft\_retail_\Interface\AddOns" (
     set "TARGET_DIR=D:\Games\World of Warcraft\_retail_\Interface\AddOns"
+) else if exist "E:\Games\World of Warcraft\_retail_\Interface\AddOns" (
+    set "TARGET_DIR=E:\Games\World of Warcraft\_retail_\Interface\AddOns"
 ) else if exist "C:\Games\World of Warcraft\_retail_\Interface\AddOns" (
     set "TARGET_DIR=C:\Games\World of Warcraft\_retail_\Interface\AddOns"
 )
