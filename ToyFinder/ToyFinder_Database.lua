@@ -4,7 +4,9 @@
     custos e instruções completas para obter as Toys SEM precisar de abrir o navegador!
 ]]
 
-ToyFinderDatabase = {}
+local addonName, ns = ...
+ns.Database = ns.Database or {}
+local ToyFinderDatabase = ns.Database
 
 -- Base de dados com guias ricos em Português
 -- Campos:

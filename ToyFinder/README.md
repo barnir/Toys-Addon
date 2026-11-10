@@ -72,7 +72,16 @@ O ficheiro `ToyFinder_Database.lua` tem dois níveis:
 1. **`Entries`** — guias completos (com `guide`, `coords`, `waypoint`, `cost`, `target`), escritos à mão ou por agentes de pesquisa com verificação de fontes. Estas toys mostram o badge **📖** na lista e o botão verde de GPS ativo.
 2. **`MassDB`** — entradas compactas geradas automaticamente (`n` = nome, `t` = tipo de fonte, `s` = texto da fonte, `z` = zona, `g` = NPC) cobrindo ~1.080 toys. Servem para filtros, pesquisa e painel de detalhes; o guia completo pode ser adicionado a qualquer uma movendo-a para `Entries`.
 
-Para expandir: adiciona entradas a `Entries` (guias completos) ou regenera a `MassDB` a partir dos dados da comunidade (pipeline em `tools`/scratchpad: `toys.db.lua` do ToyBoxEnhanced + `/data/wow/toys.json` da EliteGrindLab, com join por nome). A documentação (este README e `COMO-INSTALAR.txt`) deve ser atualizada em conjunto com qualquer alteração.
+Para expandir: adiciona entradas a `Entries` (guias completos) ou regenera a `MassDB` a partir dos dados da comunidade (pipeline: `toys.db.lua` do ToyBoxEnhanced + `/data/wow/toys.json` da EliteGrindLab, com join por nome). A documentação (este README e `COMO-INSTALAR.txt`) deve ser atualizada em conjunto com qualquer alteração.
+
+## 🛠️ Convenções de desenvolvimento (Midnight 12.0 / Interface 120001)
+
+- Cada ficheiro `.lua` começa com `local addonName, ns = ...`; toda a API do addon vive em `ns` (`ns.L`, `ns.Data`, `ns.Database`, `ns.ToyFinder`, `ns.UI`, `ns.Minimap`). O único global permitido é a SavedVariable declarada no `.toc` (`ToyFinderDB`) — mais as excepções obrigatórias do engine: `SLASH_*`/`SlashCmdList` (slash commands) e as funções `AddonCompartmentFunc*` do `.toc`.
+- Eventos usam **despacho por tabela** (`local handlers = { EVENT = function(...) end }` + `RegisterEvent` em loop), nunca cadeias `if/elseif` no `OnEvent`.
+- SavedVariables só são tocadas depois de `ADDON_LOADED` do próprio addon.
+- Lua 5.1 do WoW: sem `goto`, `//`, `_ENV`, `load()` com env; bitwise via `bit.band/bor/lshift`.
+- APIs depreciadas não são usadas (`C_Spell.*`, `C_Item.*`, `C_Container.*`, `C_UnitAuras.*`, etc. — ver convenções do projeto); quando uma `C_*` devolve tabela, acede-se aos campos (`info.name`), nunca a múltiplos retornos.
+- `.toc` com `## Interface: 120001`.
 
 ---
 

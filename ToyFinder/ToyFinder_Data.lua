@@ -3,7 +3,10 @@
     Definições de Expansões, Fontes (Vendedores, Loot, Tesouros), Cores e Metadados
 ]]
 
-ToyFinderData = {}
+local addonName, ns = ...
+ns.Data = ns.Data or {}
+local ToyFinderData = ns.Data
+local L = ns.L
 
 -- Expansões de World of Warcraft (incluindo The War Within e Midnight 12.0)
 ToyFinderData.Expansions = {
@@ -25,80 +28,80 @@ ToyFinderData.Expansions = {
 ToyFinderData.SourceTypes = {
     ["VENDOR"] = {
         id = "VENDOR",
-        tag = ToyFinderLocales.TAG_VENDOR,
-        name = ToyFinderLocales.SOURCE_VENDOR,
+        tag = ns.L.TAG_VENDOR,
+        name = ns.L.SOURCE_VENDOR,
         color = "ffd200",     -- Amarelo Ouro
         r = 1.0, g = 0.82, b = 0.0,
         icon = "Interface\\Icons\\INV_Misc_Coin_01",
     },
     ["LOOT"] = {
         id = "LOOT",
-        tag = ToyFinderLocales.TAG_LOOT,
-        name = ToyFinderLocales.SOURCE_LOOT,
+        tag = ns.L.TAG_LOOT,
+        name = ns.L.SOURCE_LOOT,
         color = "ff5252",     -- Vermelho Coral
         r = 1.0, g = 0.32, b = 0.32,
         icon = "Interface\\Icons\\INV_Sword_04",
     },
     ["TREASURE"] = {
         id = "TREASURE",
-        tag = ToyFinderLocales.TAG_TREASURE,
-        name = ToyFinderLocales.SOURCE_TREASURE,
+        tag = ns.L.TAG_TREASURE,
+        name = ns.L.SOURCE_TREASURE,
         color = "00e5ff",     -- Ciano Elétrico
         r = 0.0, g = 0.90, b = 1.0,
         icon = "Interface\\Icons\\INV_Box_01",
     },
     ["QUEST"] = {
         id = "QUEST",
-        tag = ToyFinderLocales.TAG_QUEST,
-        name = ToyFinderLocales.SOURCE_QUEST,
+        tag = ns.L.TAG_QUEST,
+        name = ns.L.SOURCE_QUEST,
         color = "ffb142",     -- Laranja Dourado
         r = 1.0, g = 0.69, b = 0.26,
         icon = "Interface\\Icons\\QuestLegendaryTurnin",
     },
     ["ACHIEVEMENT"] = {
         id = "ACHIEVEMENT",
-        tag = ToyFinderLocales.TAG_ACHIEVEMENT,
-        name = ToyFinderLocales.SOURCE_ACHIEVEMENT,
+        tag = ns.L.TAG_ACHIEVEMENT,
+        name = ns.L.SOURCE_ACHIEVEMENT,
         color = "c56cf0",     -- Roxo / Violeta
         r = 0.77, g = 0.42, b = 0.94,
         icon = "Interface\\Icons\\ACHIEVEMENT_GUILDPERK_LADIESANDGENTS",
     },
     ["EVENT"] = {
         id = "EVENT",
-        tag = ToyFinderLocales.TAG_EVENT,
-        name = ToyFinderLocales.SOURCE_EVENT,
+        tag = ns.L.TAG_EVENT,
+        name = ns.L.SOURCE_EVENT,
         color = "3ae374",     -- Verde Primavera
         r = 0.23, g = 0.89, b = 0.45,
         icon = "Interface\\Icons\\INV_Misc_Ribbon_01",
     },
     ["PROFESSION"] = {
         id = "PROFESSION",
-        tag = ToyFinderLocales.TAG_PROFESSION,
-        name = ToyFinderLocales.SOURCE_PROFESSION,
+        tag = ns.L.TAG_PROFESSION,
+        name = ns.L.SOURCE_PROFESSION,
         color = "17c0eb",     -- Azul Céu
         r = 0.09, g = 0.75, b = 0.92,
         icon = "Interface\\Icons\\Trade_Engineering",
     },
     ["TRADING_POST"] = {
         id = "TRADING_POST",
-        tag = ToyFinderLocales.TAG_TRADING_POST,
-        name = ToyFinderLocales.SOURCE_TRADING_POST,
+        tag = ns.L.TAG_TRADING_POST,
+        name = ns.L.SOURCE_TRADING_POST,
         color = "e15f41",     -- Terracota
         r = 0.88, g = 0.37, b = 0.25,
         icon = "Interface\\Icons\\INV_Misc_Coin_17",
     },
     ["STORE"] = {
         id = "STORE",
-        tag = ToyFinderLocales.TAG_STORE,
-        name = ToyFinderLocales.SOURCE_STORE,
+        tag = ns.L.TAG_STORE,
+        name = ns.L.SOURCE_STORE,
         color = "7158e2",     -- Púrpura Profundo
         r = 0.44, g = 0.35, b = 0.89,
         icon = "Interface\\Icons\\INV_Misc_Bag_07",
     },
     ["OTHER"] = {
         id = "OTHER",
-        tag = ToyFinderLocales.TAG_OTHER,
-        name = ToyFinderLocales.SOURCE_OTHER,
+        tag = ns.L.TAG_OTHER,
+        name = ns.L.SOURCE_OTHER,
         color = "a4b0be",     -- Cinza Metálico
         r = 0.64, g = 0.69, b = 0.75,
         icon = "Interface\\Icons\\INV_Misc_QuestionMark",

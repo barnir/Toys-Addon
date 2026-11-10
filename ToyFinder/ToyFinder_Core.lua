@@ -3,9 +3,12 @@
     Varredura de Brinquedos, Extração de Fontes, Categorização e Integração WoWhead
 ]]
 
-ToyFinder = ToyFinder or {}
-local L = ToyFinderLocales
-local Data = ToyFinderData
+local addonName, ns = ...
+ns.ToyFinder = ns.ToyFinder or {}
+local ToyFinder = ns.ToyFinder
+local ToyFinderDatabase = ns.Database
+local L = ns.L
+local Data = ns.Data
 
 -- Estrutura de dados interna
 ToyFinder.toys = {}            -- Array indexado com todas as toys encontradas
@@ -264,10 +267,10 @@ function ToyFinder:ResetAllFilters()
     self.searchQuery = ""
     self.sortBy = "NEWEST"
     self:ApplyFilters()
-    if ToyFinderUI and ToyFinderUI.UpdateView then
-        ToyFinderUI:UpdateView()
-        if ToyFinderUI.UpdateFilterButtonLabels then
-            ToyFinderUI:UpdateFilterButtonLabels()
+    if ns.UI and ns.UI.UpdateView then
+        ns.UI:UpdateView()
+        if ns.UI.UpdateFilterButtonLabels then
+            ns.UI:UpdateFilterButtonLabels()
         end
     end
 end
@@ -381,8 +384,8 @@ function ToyFinder:ScanAllToys()
     
     -- Aplica filtros atuais e atualiza interface
     self:ApplyFilters()
-    if ToyFinderUI and ToyFinderUI.UpdateView then
-        ToyFinderUI:UpdateView()
+    if ns.UI and ns.UI.UpdateView then
+        ns.UI:UpdateView()
     end
 end
 
@@ -410,8 +413,8 @@ function ToyFinder:RefreshToyStatuses()
     end
     
     self:ApplyFilters()
-    if ToyFinderUI and ToyFinderUI.UpdateView then
-        ToyFinderUI:UpdateView(true)
+    if ns.UI and ns.UI.UpdateView then
+        ns.UI:UpdateView(true)
     end
 end
 
@@ -522,23 +525,34 @@ function ToyFinder:ApplyFilters()
 end
 
 --------------------------------------------------------------------------------
--- EVENTOS DO WOW
+-- EVENTOS DO WOW (despacho por tabela, sem cadeias if/elseif)
 --------------------------------------------------------------------------------
-local eventFrame = CreateFrame("Frame")
-eventFrame:RegisterEvent("ADDON_LOADED")
-eventFrame:RegisterEvent("PLAYER_LOGIN")
-eventFrame:RegisterEvent("TOYS_UPDATED")
-
-eventFrame:SetScript("OnEvent", function(self, event, arg1, arg2)
-    if event == "ADDON_LOADED" and arg1 == "ToyFinder" then
-        ToyFinder:InitializeDB()
-    elseif event == "PLAYER_LOGIN" then
+local eventHandlers = {
+    ADDON_LOADED = function(addon)
+        -- SavedVariables só são seguras depois deste evento
+        if addon == addonName then
+            ToyFinder:InitializeDB()
+        end
+    end,
+    PLAYER_LOGIN = function()
         -- Pequeno delay para garantir que o cliente carregou a base de itens
         C_Timer.After(1.5, function()
             ToyFinder:ScanAllToys()
         end)
-    elseif event == "TOYS_UPDATED" then
+    end,
+    TOYS_UPDATED = function()
         ToyFinder:RefreshToyStatuses()
+    end,
+}
+
+local eventFrame = CreateFrame("Frame")
+for eventName in pairs(eventHandlers) do
+    eventFrame:RegisterEvent(eventName)
+end
+eventFrame:SetScript("OnEvent", function(self, event, ...)
+    local handler = eventHandlers[event]
+    if handler then
+        handler(...)
     end
 end)
 
@@ -559,12 +573,12 @@ SlashCmdList["TOYFINDER"] = function(msg)
     elseif cmd == "missing" or cmd == "falta" then
         ToyFinder.activeFilter = "MISSING"
         ToyFinder:ApplyFilters()
-        if ToyFinderUI then
-            local f = ToyFinderUI:CreateMainFrame()
+        if ns.UI then
+            local f = ns.UI:CreateMainFrame()
             if f and not f:IsShown() then
-                ToyFinderUI:Toggle()
+                ns.UI:Toggle()
             else
-                ToyFinderUI:UpdateView()
+                ns.UI:UpdateView()
             end
         end
     elseif cmd == "help" or cmd == "ajuda" then
@@ -573,8 +587,8 @@ SlashCmdList["TOYFINDER"] = function(msg)
         print("|cff00e5ff/tf scan|r - Força uma re-varredura da Coleção de Brinquedos.")
         print("|cff00e5ff/tf missing|r - Abre diretamente filtrado nos Brinquedos em falta.")
     else
-        if ToyFinderUI then
-            ToyFinderUI:Toggle()
+        if ns.UI then
+            ns.UI:Toggle()
         end
     end
 end

@@ -3,8 +3,12 @@
     Botão no Minimapa com suporte para arrastar, estatísticas rápidas no tooltip e atalhos
 ]]
 
-ToyFinderMinimap = {}
-local L = ToyFinderLocales
+local addonName, ns = ...
+ns.Minimap = ns.Minimap or {}
+local ToyFinderMinimap = ns.Minimap
+local ToyFinder = ns.ToyFinder
+local ToyFinderUI = ns.UI
+local L = ns.L
 
 local minimapButton = nil
 
@@ -68,12 +72,13 @@ function ToyFinderMinimap:CreateButton()
         self:SetScript("OnUpdate", nil)
     end)
 
-    btn:SetScript("OnClick", function(self, button)
-        if button == "LeftButton" then
+    local clickHandlers = {
+        LeftButton = function()
             if ToyFinderUI then
                 ToyFinderUI:Toggle()
             end
-        elseif button == "RightButton" then
+        end,
+        RightButton = function()
             -- Alternar rapidamente entre Em Falta e Todas
             if ToyFinder.activeFilter == "MISSING" then
                 ToyFinder.activeFilter = "ALL"
@@ -86,6 +91,12 @@ function ToyFinderMinimap:CreateButton()
             end
             print("|cff9d4eddToyFinder:|r Filtro: " .. (ToyFinder.activeFilter == "MISSING" and "|cffff5252Em Falta|r" or "|cff3ae374Todas|r"))
             PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON)
+        end,
+    }
+    btn:SetScript("OnClick", function(self, button)
+        local handler = clickHandlers[button]
+        if handler then
+            handler()
         end
     end)
 
@@ -148,9 +159,19 @@ _G["ToyFinder_OnAddonCompartmentLeave"] = function()
     GameTooltip:Hide()
 end
 
--- Inicializa o botão no login
+-- Inicializa o botão no login (despacho por tabela)
+local minimapEvents = {
+    PLAYER_LOGIN = function()
+        ToyFinderMinimap:CreateButton()
+    end,
+}
 local f = CreateFrame("Frame")
-f:RegisterEvent("PLAYER_LOGIN")
-f:SetScript("OnEvent", function()
-    ToyFinderMinimap:CreateButton()
+for eventName in pairs(minimapEvents) do
+    f:RegisterEvent(eventName)
+end
+f:SetScript("OnEvent", function(self, event, ...)
+    local handler = minimapEvents[event]
+    if handler then
+        handler(...)
+    end
 end)

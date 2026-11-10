@@ -3,9 +3,12 @@
     Interface visual completa com lista virtualizada, filtros, detalhes de fontes e modal WoWhead
 ]]
 
-ToyFinderUI = ToyFinderUI or {}
-local L = ToyFinderLocales
-local Data = ToyFinderData
+local addonName, ns = ...
+ns.UI = ns.UI or {}
+local ToyFinderUI = ns.UI
+local ToyFinder = ns.ToyFinder
+local L = ns.L
+local Data = ns.Data
 
 local mainFrame = nil
 local rowFrames = {}

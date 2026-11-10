@@ -3,7 +3,8 @@
     Suporte completo para Português (ptBR/ptPT), Inglês (enUS) e Espanhol (esES)
 ]]
 
-ToyFinderLocales = {}
+local addonName, ns = ...
+ns.L = ns.L or {}
 
 local L_en = {
     ADDON_TITLE = "ToyFinder",
@@ -257,22 +258,15 @@ local L_es = {
 -- Select appropriate locale based on client language
 local locale = GetLocale()
 if locale == "ptBR" or locale == "ptPT" then
-    ToyFinderLocales = L_pt
+    ns.L = L_pt
 elseif locale == "esES" or locale == "esMX" then
-    ToyFinderLocales = L_es
+    ns.L = L_es
 else
-    -- Default to Portuguese if requested by user, or provide pt with en fallback
-    -- Since the user explicitly requested in Portuguese, default to L_pt, but let English users have L_en
-    if locale:find("^pt") then
-        ToyFinderLocales = L_pt
-    else
-        -- If client is in Portuguese or user prefers Portuguese:
-        ToyFinderLocales = L_pt
-    end
+    ns.L = L_pt
 end
 
 -- Allow lookup with fallback to English if key missing
-setmetatable(ToyFinderLocales, {
+setmetatable(ns.L, {
     __index = function(t, k)
         return L_en[k] or k
     end
