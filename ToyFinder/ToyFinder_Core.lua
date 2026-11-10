@@ -10,6 +10,9 @@ local ToyFinderDatabase = ns.Database
 local L = ns.L
 local Data = ns.Data
 
+-- Hot globals localized (perf rule from the guide: localize frequently used globals)
+local string, table, math, ipairs, pairs, tostring, pcall = string, table, math, ipairs, pairs, tostring, pcall
+
 -- Estrutura de dados interna
 ToyFinder.toys = {}            -- Array indexado com todas as toys encontradas
 ToyFinder.toysByID = {}        -- Lookup rápido [itemID] = toyObject
@@ -317,66 +320,86 @@ function ToyFinder:ScanAllToys()
         print("|cffff0000ToyFinder Error:|r C_ToyBox API not found.")
         return
     end
+    if self._scanning then return end
 
-    -- Salva o estado dos filtros nativos do jogador na Coleção do WoW
+    -- Save native filter state
     local savedFilterString = C_ToyBox.GetFilterString and C_ToyBox.GetFilterString() or ""
     local savedCollected = C_ToyBox.GetCollectedShown and C_ToyBox.GetCollectedShown()
     local savedUncollected = C_ToyBox.GetUncollectedShown and C_ToyBox.GetUncollectedShown()
     local savedUnusable = C_ToyBox.GetUnusableShown and C_ToyBox.GetUnusableShown()
-    
-    -- Habilita temporariamente todos os filtros para obter a lista total
+
+    -- Temporarily enable all native filters to get the full list
     if C_ToyBox.SetFilterString then C_ToyBox.SetFilterString("") end
     if C_ToyBox.SetAllExpansionTypeFilters then pcall(C_ToyBox.SetAllExpansionTypeFilters, true) end
     if C_ToyBox.SetAllSourceTypeFilters then pcall(C_ToyBox.SetAllSourceTypeFilters, true) end
     if C_ToyBox.SetCollectedShown then pcall(C_ToyBox.SetCollectedShown, true) end
     if C_ToyBox.SetUncollectedShown then pcall(C_ToyBox.SetUncollectedShown, true) end
     if C_ToyBox.SetUnusableShown then pcall(C_ToyBox.SetUnusableShown, true) end
-    
+
     local totalToysCount = C_ToyBox.GetNumFilteredToys() or 0
-    
-    self.toys = {}
-    self.toysByID = {}
-    local collectedCount = 0
-    local missingCount = 0
-    
+
+    -- Phase 1 (fast, synchronous): only IDs + base info; restore native filters
+    -- IMMEDIATELY so the game's Toy Collection state is not held during the scan
+    local raw = {}
     for i = 1, totalToysCount do
         local itemID = C_ToyBox.GetToyFromIndex(i)
         if itemID and itemID > 0 then
             local _, toyName, icon, isFav, hasFanfare, quality = C_ToyBox.GetToyInfo(itemID)
-            local isCollected = PlayerHasToy(itemID)
-            
-            if isCollected then
-                collectedCount = collectedCount + 1
-            else
-                missingCount = missingCount + 1
-            end
-            
-            -- Se o nome ou ícone ainda não vieram do servidor, tenta pedir preload
             if not toyName or toyName == "" then
                 if C_Item and C_Item.RequestLoadItemDataByID then
                     C_Item.RequestLoadItemDataByID(itemID)
                 end
                 toyName = "Toy #" .. itemID
             end
-            
-            icon = icon or "Interface\\Icons\\INV_Misc_Toy_01"
-            quality = quality or 1
-            
-            -- Extração rápida da fonte
-            local sourceText, sourceType, dbEntry = self:ExtractToySource(itemID)
-            
-            -- Verifica se está nas favoritas do addon
-            local isCustomFav = ToyFinderDB.favorites[itemID] or isFav
-            
-            local toyObj = {
-                index = i,
+            raw[#raw + 1] = {
                 itemID = itemID,
                 name = toyName,
-                icon = icon,
-                quality = quality,
-                isCollected = isCollected,
+                icon = icon or "Interface\\Icons\\INV_Misc_Toy_01",
+                quality = quality or 1,
                 isWowFavorite = isFav,
-                isFavorite = isCustomFav,
+                isCollected = PlayerHasToy(itemID),
+            }
+        end
+    end
+
+    if C_ToyBox.SetFilterString then C_ToyBox.SetFilterString(savedFilterString) end
+    if savedCollected ~= nil and C_ToyBox.SetCollectedShown then pcall(C_ToyBox.SetCollectedShown, savedCollected) end
+    if savedUncollected ~= nil and C_ToyBox.SetUncollectedShown then pcall(C_ToyBox.SetUncollectedShown, savedUncollected) end
+    if savedUnusable ~= nil and C_ToyBox.SetUnusableShown then pcall(C_ToyBox.SetUnusableShown, savedUnusable) end
+
+    -- Phase 2 (chunked via ticker so login never freezes): source + DB + continent
+    self._scanning = true
+    self.toys = {}
+    self.toysByID = {}
+    local collectedCount = 0
+    local missingCount = 0
+    local idx = 0
+    local CHUNK = 150
+    local ticker
+    ticker = C_Timer.NewTicker(0, function()
+        local processed = 0
+        while processed < CHUNK and idx < #raw do
+            idx = idx + 1
+            processed = processed + 1
+            local r = raw[idx]
+            local itemID = r.itemID
+            if r.isCollected then
+                collectedCount = collectedCount + 1
+            else
+                missingCount = missingCount + 1
+            end
+
+            local sourceText, sourceType, dbEntry = self:ExtractToySource(itemID)
+
+            local toyObj = {
+                index = idx,
+                itemID = itemID,
+                name = r.name,
+                icon = r.icon,
+                quality = r.quality,
+                isCollected = r.isCollected,
+                isWowFavorite = r.isWowFavorite,
+                isFavorite = ToyFinderDB.favorites[itemID] or r.isWowFavorite,
                 sourceText = sourceText,
                 sourceType = sourceType,
                 dbData = dbEntry,
@@ -387,45 +410,43 @@ function ToyFinder:ScanAllToys()
                 difficulty = dbEntry and dbEntry.difficulty,
                 waypoint = dbEntry and dbEntry.waypoint,
             }
-            
-            -- Deteção automática de Continente e Zona
+
             local continent, detectedZone = self:DetermineContinent(toyObj)
             toyObj.continent = continent
             if not toyObj.zone or toyObj.zone == "" then
                 toyObj.zone = detectedZone
             end
-            
+
+            -- Precomputed lowercase search fields (avoids string.lower per toy per keystroke)
+            toyObj.searchName = string.lower(r.name)
+            toyObj.searchSource = sourceText and string.lower(sourceText) or ""
+            toyObj.searchZone = toyObj.zone and string.lower(toyObj.zone) or ""
+            toyObj.searchTarget = toyObj.target and string.lower(toyObj.target) or ""
+            toyObj.searchCoords = toyObj.coords and string.lower(toyObj.coords) or ""
+            toyObj.searchGuide = (dbEntry and dbEntry.guide) and string.lower(dbEntry.guide) or ""
+
             table.insert(self.toys, toyObj)
             self.toysByID[itemID] = toyObj
         end
-    end
-    
-    -- Restaura os filtros nativos do jogador com segurança
-    if C_ToyBox.SetFilterString then C_ToyBox.SetFilterString(savedFilterString) end
-    if savedCollected ~= nil and C_ToyBox.SetCollectedShown then pcall(C_ToyBox.SetCollectedShown, savedCollected) end
-    if savedUncollected ~= nil and C_ToyBox.SetUncollectedShown then pcall(C_ToyBox.SetUncollectedShown, savedUncollected) end
-    if savedUnusable ~= nil and C_ToyBox.SetUnusableShown then pcall(C_ToyBox.SetUnusableShown, savedUnusable) end
-    
-    -- Atualiza estatísticas
-    self.stats.total = #self.toys
-    self.stats.collected = collectedCount
-    self.stats.missing = missingCount
-    if self.stats.total > 0 then
-        self.stats.percent = string.format("%.1f", (collectedCount / self.stats.total) * 100)
-    else
-        self.stats.percent = "0.0"
-    end
-    
-    -- Aplica filtros atuais e atualiza interface
-    self:ApplyFilters()
-    if ns.UI and ns.UI.UpdateView then
-        ns.UI:UpdateView()
-    end
-end
 
---------------------------------------------------------------------------------
--- ATUALIZAÇÃO RÁPIDA DE STATUS (Sem recarregar tudo)
---------------------------------------------------------------------------------
+        if idx >= #raw then
+            ticker:Cancel()
+            self._scanning = false
+            self.stats.total = #self.toys
+            self.stats.collected = collectedCount
+            self.stats.missing = missingCount
+            if self.stats.total > 0 then
+                self.stats.percent = string.format("%.1f", (collectedCount / self.stats.total) * 100)
+            else
+                self.stats.percent = "0.0"
+            end
+            self:ApplyFilters()
+            if ns.UI and ns.UI.UpdateView then
+                ns.UI:UpdateView()
+            end
+        end
+    end)
+end
 function ToyFinder:RefreshToyStatuses()
     local collectedCount = 0
     local missingCount = 0
@@ -516,13 +537,14 @@ function ToyFinder:ApplyFilters()
         
         local passSearch = true
         if query ~= "" then
-            local nameMatch = toy.name and string.find(string.lower(toy.name), query, 1, true)
-            local idMatch = tostring(toy.itemID) == query or string.find(tostring(toy.itemID), query, 1, true)
-            local sourceMatch = toy.sourceText and string.find(string.lower(toy.sourceText), query, 1, true)
-            local zoneMatch = toy.zone and string.find(string.lower(toy.zone), query, 1, true)
-            local targetMatch = toy.target and string.find(string.lower(toy.target), query, 1, true)
-            local coordsMatch = toy.coords and string.find(string.lower(toy.coords), query, 1, true)
-            local guideMatch = toy.dbData and toy.dbData.guide and string.find(string.lower(toy.dbData.guide), query, 1, true)
+            -- usa os campos precomputados em minúsculas (search*), sem alocar strings novas
+            local nameMatch = string.find(toy.searchName or "", query, 1, true)
+            local idMatch = string.find(tostring(toy.itemID), query, 1, true)
+            local sourceMatch = string.find(toy.searchSource or "", query, 1, true)
+            local zoneMatch = string.find(toy.searchZone or "", query, 1, true)
+            local targetMatch = string.find(toy.searchTarget or "", query, 1, true)
+            local coordsMatch = string.find(toy.searchCoords or "", query, 1, true)
+            local guideMatch = string.find(toy.searchGuide or "", query, 1, true)
             passSearch = (nameMatch or idMatch or sourceMatch or zoneMatch or targetMatch or coordsMatch or guideMatch)
         end
         

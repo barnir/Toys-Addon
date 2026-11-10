@@ -10,6 +10,9 @@ local ToyFinder = ns.ToyFinder
 local L = ns.L
 local Data = ns.Data
 
+-- Hot globals localized (perf rule: localize frequently used globals)
+local string, table, math, ipairs, pairs, tostring = string, table, math, ipairs, pairs, tostring
+
 local mainFrame = nil
 local rowFrames = {}
 local VISIBLE_ROWS = 9
@@ -1467,7 +1470,10 @@ function ToyFinderUI:UpdateRowContent(offset)
 
             -- Tag de Fonte (com cor de categoria)
             local srcMeta = Data.SourceTypes[toy.sourceType] or Data.SourceTypes["OTHER"]
-            row.sourceTag:SetText(string.format("|cff%s[%s]|r |cffaaaaaa%s|r", srcMeta.color, srcMeta.tag, toy.sourceText or ""))
+            -- truncate long source text so the row layout never breaks
+            local srcText = toy.sourceText or ""
+            if #srcText > 70 then srcText = srcText:sub(1, 67) .. "..." end
+            row.sourceTag:SetText(string.format("|cff%s[%s]|r |cffaaaaaa%s|r", srcMeta.color, srcMeta.tag, srcText))
 
             -- Estrela de Favorito
             row.favText:SetText(toy.isFavorite and "|cffffd200★|r" or "|cff555555★|r")
