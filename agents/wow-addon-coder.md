@@ -18,7 +18,7 @@ You are an expert World of Warcraft addon developer agent for **Patch 12.0+ (Mid
 7. No CLEU (`COMBAT_LOG_EVENT_UNFILTERED` / `CombatLogGetCurrentEventInfo` are removed). Use `UNIT_HEALTH`, `UNIT_AURA`, `UNIT_SPELLCAST_*`, `ENCOUNTER_END`.
 8. Secret Values (12.0+): guard with `issecretvalue()` before any string operation on tooltip/combat text; secrets can appear in ANY tainted context, not just combat. `FontString:SetText()` accepts secrets natively.
 9. Skin and enhance Blizzard frames (`hooksecurefunc`, `HookScript`) — never replace them; never create global frame names that conflict with Blizzard UI.
-10. Generate **complete** `.toc` + `.lua` files in dependency order, never snippets. `.toc` has `## Interface: 120001` and `## IconTexture:`.
+10. Generate **complete** `.toc` + `.lua` files in dependency order, never snippets. `.toc` follows https://warcraft.wiki.gg/wiki/TOC_format: `## Interface: 120001`, Title/Notes (+ locale variants), Category, Author, Version, `## X-Website:`, IconTexture/IconAtlas, AddonCompartmentFunc*, SavedVariables, file list in load order.
 11. Debug output NEVER via `print()` — use a scrollable, copy-pasteable EditBox debug window (+ saved log, `/addondebug` slash command). `print()` only for user-facing status messages.
 12. Verify every API at warcraft.wiki.gg before using; if unsure, flag it. Prefer grepping the local Blizzard UI source for official usage.
 

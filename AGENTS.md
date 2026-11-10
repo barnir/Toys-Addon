@@ -67,23 +67,43 @@ addon em `ToyFinder/README.md` e `COMO-INSTALAR.txt` — manter sincronizada.
 When a `C_*` function returns a table, access fields: `local info = C_Spell.GetSpellInfo(id)`
 then `info.name`, `info.iconID`. Do NOT unpack multiple returns from table-returning APIs.
 
-## .toc format
+## .toc format (standard: https://warcraft.wiki.gg/wiki/TOC_format)
+
+Syntax: directives are `## Directive: Value`; `#` starts a comment; after the directives
+comes the file list (load order matters; per-file inline conditions like
+`Mainline\File.lua` / `# [AllowLoadGameType classic] File.lua` are supported).
 
 ```
-## Interface: 120001
-## Title: AddonName
-## Notes: Description
-## Author: AuthorName
+## Interface: 120001                      # single value = latest retail (Standard); or list: 120105, 16001, 50504, 11509
+## Title: My AddOn Name                    # locale variants: ## Title-frFR: ...
+## Notes: Brief description               # locale variants: ## Notes-ptBR: ..., color codes allowed
+## Category: Miscellaneous                 # locale variants supported
+## Group: MyAddonSuite                     # group related addons
+## Author: My Name
 ## Version: 1.0.0
-## Category: Miscellaneous        (12.0+)
-## SavedVariables: AddonNameDB
-## IconTexture: Interface\Icons\INV_Misc_QuestionMark
+## X-Website: https://github.com/me/myaddon  # any ## X-___ metadata
+## IconTexture: Interface\Icons\TEMP       # or ## IconAtlas: TaskPOI-Icon
+## AddonCompartmentFunc: MyAddon_OnAddonCompartmentClick
+## AddonCompartmentFuncOnEnter: MyAddon_OnAddonCompartmentEnter
+## AddonCompartmentFuncOnLeave: MyAddon_OnAddonCompartmentLeave
+## SavedVariables: MyAddonDB                # multiple allowed, comma-separated; also SavedVariablesPerCharacter / SavedVariablesMachine
+## LoadSavedVariablesFirst: 1               # load SVs before code runs
+## AllowAddOnTableAccess: 1                # let other addons read the namespace table
+## OptionalDeps: SomeLib                    # loaded before us if present
+## Dependencies: RequiredAddOn             # hard requirement
+## DefaultState: enabled                     # enabled/disabled
+## OnlyBetaAndPTR: 1                        # load only on beta/PTR
 Core.lua
 Modules/Module1.lua
 ```
 
-New `.toc` directives (12.0+): `## Category:`, `## Group:`, `## LoadSavedVariablesFirst: 1`,
-`## AllowAddOnTableAccess: 1`.
+Directive groups (wiki.gg): display text/organization (Title, Notes, Category, Group),
+icons (IconTexture, IconAtlas), addon compartment (3 funcs), loading conditions
+(LoadOnDemand, Dependencies/Dep, OptionalDeps, LoadWith, LoadManagers, AllowLoadGameType,
+ExcludeLoadGameType, OnlyBetaAndPTR, DefaultState), saved variables (LoadSavedVariablesFirst,
+SavedVariables, SavedVariablesPerCharacter, SavedVariablesMachine), metadata (Author, Version,
+X-___), uncategorized (AllowAddOnTableAccess). Restricted (Blizzard use): AllowLoad,
+EscalateErrorDuringLoad, LoadFirst, UseSecureEnvironment.
 
 ## Common patterns
 
@@ -103,12 +123,11 @@ verification checklist, system prompt).
 
 There is no plugin to "attach" a Claude agent to this CLI agent. Instead: drop the
 agent's instruction file in this repo — repo `AGENTS.md` files are active
-instructions for any agent working on these files. This repo already carries the
-Claude Code agent definitions, whose rules are adopted below:
-
-- [WoWAddon-Expert.md](WoWAddon-Expert.md) — worker agent (full WoW addon expertise, Secret Values reference)
-- [wow.md](wow.md) — coordinator command (`/wow`)
-- Specialized agents (from https://www.better-addons.com/ai-coding-guide/):
+instructions for any agent working on these files. The original Claude Code agent
+files (`WoWAddon-Expert.md` worker, `wow.md` `/wow` coordinator — from
+[Amadeus-/WoWAddonDevGuide](https://github.com/Amadeus-/WoWAddonDevGuide/tree/master/Claude%20AI%20Commands%20(optional))
+were removed from this repo because the user does not use Claude Code; their rules are
+adopted in the section below. Specialized agents (from https://www.better-addons.com/ai-coding-guide/):
   - [agents/wow-addon-researcher.md](agents/wow-addon-researcher.md) — verified API research (warcraft.wiki.gg, Gethe/wow-ui-source, wago.tools), never hallucinates
   - [agents/wow-addon-coder.md](agents/wow-addon-coder.md) — writes Midnight-correct code (C_* namespaces, table dispatch, SavedVariables, combat checks)
   - [agents/wow-addon-news-desk.md](agents/wow-addon-news-desk.md) — tracks API changes, hotfixes, blue posts, Secret Values findings
@@ -138,8 +157,9 @@ Claude Code agent definitions, whose rules are adopted below:
 
 ## Local WoW resources (Guide Directory / Blizzard UI Source)
 
-The agent config files ([wow.md](wow.md), [WoWAddon-Expert.md](WoWAddon-Expert.md)) point at
-two folders inside `Interface/` on the WoW machine (user config: `D:\Games\World of Warcraft\_retail_\Interface\`):
+The guide repo's optional Claude files pointed at two folders inside `Interface/` on the
+WoW machine (user config: `D:\Games\World of Warcraft\_retail_\Interface\`); we use the
+same locations without Claude Code:
 
 - **Guide Directory** — `+++WoW Addon Development Guide+++/`: the knowledge base agents
   read before answering. Source: [Amadeus-/WoWAddonDevGuide](https://github.com/Amadeus-/WoWAddonDevGuide/tree/master)
