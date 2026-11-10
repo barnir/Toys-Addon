@@ -11,9 +11,9 @@ disable-model-invocation: true
 
 | Setting | Path |
 |---------|------|
-| **AddOns Directory** | `C:\Program Files (x86)\World of Warcraft\_retail_\Interface\AddOns` |
-| **Guide Directory** | `C:\Program Files (x86)\World of Warcraft\_retail_\Interface\+++WoW Addon Development Guide+++` |
-| **Blizzard UI Source** | `C:\Program Files (x86)\World of Warcraft\_retail_\Interface\+wow-ui-source+ (12.0.0)` |
+| **AddOns Directory** | `D:\Games\World of Warcraft\_retail_\Interface\AddOns` |
+| **Guide Directory** | `D:\Games\World of Warcraft\_retail_\Interface\+++WoW Addon Development Guide+++` |
+| **Blizzard UI Source** | `D:\Games\World of Warcraft\_retail_\Interface\+wow-ui-source+ (12.0.5)` |
 
 ---
 

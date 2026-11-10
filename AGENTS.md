@@ -117,6 +117,23 @@ Claude Code agent definitions, whose rules are adopted below:
   `[Section](#section)` for intra-file refs.
 - Paths in guides must be relative; only agent config files hold absolute paths
   (user config: AddOns at `D:\Games\World of Warcraft\_retail_\Interface\AddOns`).
+
+## Local WoW resources (Guide Directory / Blizzard UI Source)
+
+The agent config files ([wow.md](wow.md), [WoWAddon-Expert.md](WoWAddon-Expert.md)) point at
+two folders inside `Interface/` on the WoW machine (user config: `D:\Games\World of Warcraft\_retail_\Interface\`):
+
+- **Guide Directory** — `+++WoW Addon Development Guide+++/`: the knowledge base the agent
+  reads (`00_MASTER_GUIDE.md` … `13_Cooldown_Viewer_Guide.md`, API/event/UI references).
+  Source: [Amadeus-/WoWAddonDevGuide](https://github.com/Amadeus-/WoWAddonDevGuide) — the same
+  repo that ships the Claude agent + `/wow` command. Put the guide files there.
+- **Blizzard UI Source** — `+wow-ui-source+ (12.0.5)/`: Blizzard's official UI source code
+  (FrameXML/SharedXML/AddOns) used as reference for official patterns.
+  Source: [Gethe/wow-ui-source](https://github.com/Gethe/wow-ui-source) (git mirror, branch
+  per client, e.g. 12.0.x); alternatives: [Ketho/BlizzardInterfaceResources](https://github.com/Ketho/BlizzardInterfaceResources).
+  Clone/download into that folder.
+- Folders named `+...+`/`+++...+++` inside `Interface/` are NOT loaded as addons — only
+  `Interface/AddOns/*` loads. That's why the resources live there and not in `AddOns/`.
 - Mixin pattern (`MyAddonMixin` with `OnLoad`/`OnEvent` dispatch via `self[event]`)
   is the modern Blizzard style; this repo's `ns` namespace pattern is equivalent.
 - Indentation: keep consistent within each file (existing ToyFinder files use 4 spaces).
