@@ -1,0 +1,97 @@
+# AGENTS.md — ToyFinder (WoW Addon, Patch 12.0+ / Midnight)
+
+Regras permanentes de desenvolvimento deste addon (definidas pelo autor do projeto).
+Qualquer agente/IA a trabalhar neste repositório deve cumpri-las. Documentação do
+addon em `ToyFinder/README.md` e `COMO-INSTALAR.txt` — manter sincronizada.
+
+## WoW environment
+
+- Interface version: **120001**. WoW uses **Lua 5.1**: no `goto`, no bitwise operators
+  (`&`, `|`, `<<`), no `_ENV`, no integer division `//`, no `load()` with env arg —
+  use `loadstring()`. Bitwise ops via `bit.band()`, `bit.bor()`, `bit.lshift()`.
+- Unavailable in WoW Lua: `require()`, `dfile()`/`dofile()`, `loadfile()`, `os.*`,
+  `io.*`, `debug.*` (mostly), `package.*`, `coroutine.*` (limited), `string.dump()`.
+
+## Critical rules
+
+1. Every `.lua` file starts with: `local addonName, ns = ...`
+2. No global variables except SavedVariables declared in the `.toc`
+   (engine-required exceptions: `SLASH_*`/`SlashCmdList` and the `.toc`
+   `AddonCompartmentFunc*` global functions).
+3. Use event-driven table dispatch (`local handlers = { EVENT = function(...) end }`
+   + loop `RegisterEvent`), never `if/elseif` chains for events.
+4. SavedVariables are ONLY safe after `ADDON_LOADED` fires for this addon.
+5. Always check `InCombatLockdown()` before modifying protected/secure frames.
+6. Queue combat-blocked operations for `PLAYER_REGEN_ENABLED`.
+7. Never use `OnUpdate` for what an event can do (exception: drag handling).
+8. Always generate complete `.toc` + `.lua` files, not snippets.
+
+## Midnight (12.0) mandatory changes
+
+- `COMBAT_LOG_EVENT_UNFILTERED` does NOT fire for addons (removed).
+- `CombatLogGetCurrentEventInfo()` is REMOVED with no replacement.
+- Use `UNIT_HEALTH`, `UNIT_AURA`, `UNIT_SPELLCAST_START/SUCCEEDED/FAILED` instead.
+- Combat numbers are Secret Values — opaque, cannot be read/compared/stored.
+- Addon chat in instances is restricted; messages become Secret Values.
+- Skin and enhance Blizzard frames, do not replace them.
+
+## Deprecated functions — DO NOT USE
+
+- `GetSpellInfo()` → `C_Spell.GetSpellInfo()` (returns TABLE: `.name`, `.iconID`, `.castTime`)
+- `GetSpellCooldown()` → `C_Spell.GetSpellCooldown()` (TABLE)
+- `GetSpellCharges()` → `C_Spell.GetSpellCharges()` (TABLE)
+- `GetSpellTexture()` → `C_Spell.GetSpellTexture()`
+- `GetSpellDescription()` → `C_Spell.GetSpellDescription()`
+- `GetItemInfo()` → `C_Item.GetItemInfo()` (async, may return nil)
+- `GetItemIcon()` → `C_Item.GetItemIconByID()`
+- `GetContainerNumSlots()` → `C_Container.GetContainerNumSlots()`
+- `GetContainerItemInfo()` → `C_Container.GetContainerItemInfo()` (TABLE)
+- `GetContainerItemLink()` → `C_Container.GetContainerItemLink()`
+- `PickupContainerItem()` → `C_Container.PickupContainerItem()`
+- `UseContainerItem()` → `C_Container.UseContainerItem()`
+- `GetAddOnInfo()` → `C_AddOns.GetAddOnInfo()`
+- `GetNumAddOns()` → `C_AddOns.GetNumAddOns()`
+- `IsAddOnLoaded()` → `C_AddOns.IsAddOnLoaded()`
+- `GetSpecialization()` → `PlayerUtil.GetCurrentSpecID()`
+- `GetAchievementInfo()` → `C_AchievementInfo.GetAchievementInfo()`
+- `GetCurrencyInfo()` → `C_CurrencyInfo.GetCurrencyInfo()` (TABLE)
+- `UnitAura()` → `C_UnitAuras.GetAuraDataByIndex()` (AuraData TABLE)
+- `UnitBuff()` → `C_UnitAuras.GetBuffDataByIndex()` (AuraData TABLE)
+- `UnitDebuff()` → `C_UnitAuras.GetDebuffDataByIndex()` (AuraData TABLE)
+
+When a `C_*` function returns a table, access fields: `local info = C_Spell.GetSpellInfo(id)`
+then `info.name`, `info.iconID`. Do NOT unpack multiple returns from table-returning APIs.
+
+## .toc format
+
+```
+## Interface: 120001
+## Title: AddonName
+## Notes: Description
+## Author: AuthorName
+## Version: 1.0.0
+## SavedVariables: AddonNameDB
+## IconTexture: Interface\Icons\INV_Misc_QuestionMark
+Core.lua
+Modules/Module1.lua
+```
+
+## Common patterns
+
+- Slash commands: `SLASH_NAME1 = "/cmd"; SlashCmdList["NAME"] = function(msg) end`
+- Timers: `C_Timer.After(s, cb)` (not cancellable); `C_Timer.NewTimer(s, cb)` → handle with `:Cancel()`; `C_Timer.NewTicker(s, cb, n)`
+- Frame pools: `CreateFramePool("Frame", parent, template)`
+- Hooks: `hooksecurefunc("Func", postHook)` / `hooksecurefunc(object, "Method", postHook)`
+
+## Verification
+
+Before using any API, verify it exists in Patch 12.0.1; if unsure, flag it for
+verification against warcraft.wiki.gg/wiki/API_FunctionName.
+
+## How to attach an external agent's rules (e.g. a Claude agent)
+
+There is no plugin to "attach" a Claude agent to this CLI agent. Instead: drop the
+agent's instruction file in this repo (e.g. replace/extend this `AGENTS.md`, or add
+`docs/AGENT.md` and reference it here) — repo `AGENTS.md` files are active
+instructions for any agent working on these files. Alternatively paste the rules in
+chat. Sub-agents spawned for research tasks receive these rules in their prompt.
