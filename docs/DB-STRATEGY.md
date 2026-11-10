@@ -26,7 +26,8 @@ Regras de qualidade dos dados:
 | Fonte | O que dá | Como obter |
 |---|---|---|
 | [ToyBoxEnhanced](https://github.com/exochron/ToyBoxEnhanced) `Database/toys.db.lua` | mapa itemID → nome EN (~1.161 toys) | `curl -o tools/db/sources/toys.db.lua https://raw.githubusercontent.com/exochron/ToyBoxEnhanced/master/Database/toys.db.lua` |
-| [EliteGrindLab](https://elitegrindlab.com/wow/toys/) `/data/wow/toys.json` | 1.137 toys com source/group/detail/expansion/npc/zone/cost/slug | `curl -o tools/db/sources/egl_toys.json https://elitegrindlab.com/data/wow/toys.json` |
+| [WoWDB](https://thewowdb.com/toys/) (⭐ fonte primária, datamined do build retail atual) | 1.147 toys com ID, nome, source type + por página "How to Obtain" (vendor/NPC/zona/custo) | list: `curl -o tools/db/sources/wowdb_toys.html https://thewowdb.com/toys/` → parsear `wowdb_cards.tsv`; páginas: `xargs` com `-P 2` + `sleep` (Cloudflare rate-limits a -P 8, error 1015) → parsear para `wowdb_obtain.tsv`; usar `tools/db/gen_massdb_wowdb.ps1` |
+| [EliteGrindLab](https://elitegrindlab.com/wow/toys/) `/data/wow/toys.json` | 1.137 toys com source/group/detail/expansion/npc/zone/cost/slug (fallback + expansão) | `curl -o tools/db/sources/egl_toys.json https://elitegrindlab.com/data/wow/toys.json` |
 | Páginas individuais EGL `/wow/toys/<slug>/` | texto "How to get it" estruturado (dt/dd) | `cat tools/db/sources/egl_slugs.txt \| xargs -P 8 -n1 sh -c 'curl -sL "https://elitegrindlab.com$0/" -o "tools/db/sources/pages/$(basename $0).html"'` |
 | WoWHead/WowDB/Wowpedia | coordenadas exatas, NPCs, drop rates | **scraping bloqueado** — usar agentes de pesquisa (web_search), nunca curl direto |
 
