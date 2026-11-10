@@ -10,8 +10,15 @@ addon em `ToyFinder/README.md` e `COMO-INSTALAR.txt` — manter sincronizada.
 language) inside `ToyFinder/`**: UI strings, `ToyFinder_Locales.lua` (always English),
 database entries (names, zones, targets, costs, guides, source text in
 `ToyFinder_Database.lua`), `.toc` Notes/Title, minimap tooltip, slash-command output.
-Repo-level docs (root `README.md`, `COMO-INSTALAR.txt`, `AGENTS.md`, `agents/`) stay in
-Portuguese for the project owner — only the addon ships in English.
+Repo-level docs (root `README.md`, `COMO-INSTALAR.txt`, `AGENTS.md`, `agents/`, `docs/`,
+`tools/`) stay in Portuguese for the project owner — only the addon ships in English.
+
+## 🗄️ Database strategy
+
+A estratégia de melhoria contínua da base de dados (fontes, pipeline, agentes de
+pesquisa, quality gates, roadmap) está em [docs/DB-STRATEGY.md](docs/DB-STRATEGY.md);
+scripts reutilizáveis em [tools/db/](tools/db/) (gerar MassDB, juntar guias de agentes,
+syntax check, prompt template para agentes).
 Exception: *detection* code may still recognize multi-language game text (tooltip
 source labels in PT/EN/ES/DE/FR) so classification works on any client — that is input
 parsing, not addon output.
