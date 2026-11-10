@@ -1,10 +1,8 @@
 ## Interface: 120001
 ## Title: |cff9d4eddToy|r|cff00e5ffFinder|r |cffffd200(Midnight)|r
-## Notes: Mostra todos os Toys do jogo, se já os tens ou não, fontes de obtenção (Vendedores, Loot, Tesouros) e links diretos do WoWhead!
-## Notes-ptBR: Mostra todos os Brinquedos do jogo, se já os tem ou não, fontes de obtenção (Vendedores, Saque, Tesouros) e links diretos do WoWhead!
-## Notes-esES: Muestra todos los juguetes del juego, si ya los tienes o no, fuentes de obtención (Vendedores, Botín, Tesoros) y enlaces directos a WoWhead.
+## Notes: Shows every toy in the game, whether you already have it or not, where to get it (Vendors, Loot, Treasures) and direct WoWhead links!
 ## Author: Francisco
-## Version: 1.5.0
+## Version: 1.6.0
 ## Category: Miscellaneous
 ## X-Website: https://github.com/barnir/Toys-Addon
 ## SavedVariables: ToyFinderDB

@@ -4,6 +4,18 @@ Regras permanentes de desenvolvimento deste addon (definidas pelo autor do proje
 Qualquer agente/IA a trabalhar neste repositório deve cumpri-las. Documentação do
 addon em `ToyFinder/README.md` e `COMO-INSTALAR.txt` — manter sincronizada.
 
+## 🌐 LANGUAGE RULE — ENGLISH ONLY (permanent)
+
+**The addon itself must be 100% English. Nothing in Portuguese (or any other
+language) inside `ToyFinder/`**: UI strings, `ToyFinder_Locales.lua` (always English),
+database entries (names, zones, targets, costs, guides, source text in
+`ToyFinder_Database.lua`), `.toc` Notes/Title, minimap tooltip, slash-command output.
+Repo-level docs (root `README.md`, `COMO-INSTALAR.txt`, `AGENTS.md`, `agents/`) stay in
+Portuguese for the project owner — only the addon ships in English.
+Exception: *detection* code may still recognize multi-language game text (tooltip
+source labels in PT/EN/ES/DE/FR) so classification works on any client — that is input
+parsing, not addon output.
+
 ## WoW environment
 
 - Interface version: **120001**. WoW uses **Lua 5.1**: no `goto`, no bitwise operators

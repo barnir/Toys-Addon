@@ -57,7 +57,7 @@ function ToyFinderUI:GetOrCreateDropdown()
     title:SetPoint("TOPLEFT", d, "TOPLEFT", 10, -8)
     title:SetPoint("TOPRIGHT", d, "TOPRIGHT", -10, -8)
     title:SetJustifyH("LEFT")
-    title:SetText("Selecionar Filtro")
+    title:SetText("Select Filter")
     d.title = title
 
     local line = d:CreateTexture(nil, "ARTWORK")
@@ -158,7 +158,7 @@ function ToyFinderUI:ToggleDropdown(anchorBtn, titleText, items, selectedID, onS
     end
 
     d.currentAnchor = anchorBtn
-    d.title:SetText(titleText or "Filtro")
+    d.title:SetText(titleText or "Filter")
     d.items = items or {}
     d.selectedID = selectedID
     d.onSelect = onSelectCallback
@@ -345,7 +345,7 @@ function ToyFinderUI:CreateMainFrame()
 
     local progressText = progressContainer:CreateFontString(nil, "OVERLAY", "GameFontHighlightMedium")
     progressText:SetPoint("CENTER", progressContainer, "CENTER", 0, 0)
-    progressText:SetText("A carregar coleção de brinquedos...")
+    progressText:SetText("Loading toy collection...")
     f.progressText = progressText
 
     ----------------------------------------------------------------------------
@@ -414,7 +414,7 @@ function ToyFinderUI:CreateMainFrame()
 
     local resetText = resetBtn:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
     resetText:SetPoint("CENTER", resetBtn, "CENTER", 0, 0)
-    resetText:SetText("|cffff5252✕ Limpar Filtros|r")
+    resetText:SetText("|cffff5252✕ Clear Filters|r")
 
     resetBtn:SetScript("OnClick", function()
         ToyFinder:ResetAllFilters()
@@ -498,29 +498,29 @@ function ToyFinderUI:CreateMainFrame()
         return btn
     end
 
-    -- 1. Botão Forma de Obtenção (Vendedores, Loot, Tesouros, Missões, etc.)
-    local sourceBtn = CreateFilterDropdownBtn(subControls, "📦 Obtenção: Todas ▼", 145, subControls, 0)
+    -- 1. Botão Source Type (Vendedores, Loot, Tesouros, Missões, etc.)
+    local sourceBtn = CreateFilterDropdownBtn(subControls, "📦 Source: All ▼", 145, subControls, 0)
     f.sourceBtn = sourceBtn
     f.sourceBtnText = sourceBtn.btnText
 
     local sourceItems = {
-        { id = "ALL", name = "Todas as Formas de Obtenção", color = "ffffff" },
-        { id = "VENDOR", name = "💰 Vendedores (Compra Direta)", color = "ffd200" },
-        { id = "TREASURE", name = "📦 Tesouros (Baús e Puzzles)", color = "00e5ff" },
-        { id = "LOOT", name = "⚔️ Saques / Loot (Chefes e Raros)", color = "ff5252" },
-        { id = "QUEST", name = "📜 Missões e Campanhas", color = "ffb142" },
-        { id = "ACHIEVEMENT", name = "🏆 Conquistas", color = "c56cf0" },
-        { id = "EVENT", name = "🎪 Eventos Mundiais e Feriados", color = "3ae374" },
-        { id = "PROFESSION", name = "⚙️ Profissões (Criação)", color = "17c0eb" },
-        { id = "TRADING_POST", name = "🏛️ Posto de Trocas", color = "e15f41" },
-        { id = "STORE", name = "🏪 Loja / Promoções (Blizzard)", color = "7158e2" },
-        { id = "OTHER", name = "⚪ Outros / Diversos", color = "a4b0be" },
+        { id = "ALL", name = "All Source Types", color = "ffffff" },
+        { id = "VENDOR", name = "💰 Vendors (Direct Purchase)", color = "ffd200" },
+        { id = "TREASURE", name = "📦 Treasures (Chests & Puzzles)", color = "00e5ff" },
+        { id = "LOOT", name = "⚔️ Loot / Drops (Bosses & Rares)", color = "ff5252" },
+        { id = "QUEST", name = "📜 Quests & Campaigns", color = "ffb142" },
+        { id = "ACHIEVEMENT", name = "🏆 Achievements", color = "c56cf0" },
+        { id = "EVENT", name = "🎪 World Events & Holidays", color = "3ae374" },
+        { id = "PROFESSION", name = "⚙️ Professions (Crafted)", color = "17c0eb" },
+        { id = "TRADING_POST", name = "🏛️ Trading Post", color = "e15f41" },
+        { id = "STORE", name = "🏪 Store / Promotions (Blizzard)", color = "7158e2" },
+        { id = "OTHER", name = "⚪ Other / Miscellaneous", color = "a4b0be" },
     }
 
     sourceBtn:SetScript("OnClick", function(self)
         local counts = ToyFinderUI:GetFilterCounts()
         local items = ToyFinderUI:AddCountsToItems(sourceItems, counts.source, counts.total)
-        ToyFinderUI:ToggleDropdown(self, "Forma de Obtenção", items, ToyFinder.activeSource, function(item)
+        ToyFinderUI:ToggleDropdown(self, "Source Type", items, ToyFinder.activeSource, function(item)
             ToyFinder.activeSource = item.id
             ToyFinderUI:UpdateFilterButtonLabels()
             ToyFinder:ApplyFilters()
@@ -528,15 +528,15 @@ function ToyFinderUI:CreateMainFrame()
         end)
     end)
 
-    -- 2. Botão Continente / Expansão
-    local continentBtn = CreateFilterDropdownBtn(subControls, "🌍 Continente: Todos ▼", 150, sourceBtn, 5)
+    -- 2. Botão Continent / Expansion
+    local continentBtn = CreateFilterDropdownBtn(subControls, "🌍 Continent: All ▼", 150, sourceBtn, 5)
     f.continentBtn = continentBtn
     f.continentBtnText = continentBtn.btnText
 
     continentBtn:SetScript("OnClick", function(self)
         local counts = ToyFinderUI:GetFilterCounts()
         local items = ToyFinderUI:AddCountsToItems(Data.Continents, counts.continent, counts.total)
-        ToyFinderUI:ToggleDropdown(self, "Continente / Expansão", items, ToyFinder.activeContinent, function(item)
+        ToyFinderUI:ToggleDropdown(self, "Continent / Expansion", items, ToyFinder.activeContinent, function(item)
             ToyFinder.activeContinent = item.id
             -- Reset zona ao trocar de continente
             ToyFinder.activeZone = "ALL"
@@ -547,17 +547,17 @@ function ToyFinderUI:CreateMainFrame()
     end)
 
     -- 3. Botão Zona
-    local zoneBtn = CreateFilterDropdownBtn(subControls, "📍 Zona: Todas ▼", 135, continentBtn, 5)
+    local zoneBtn = CreateFilterDropdownBtn(subControls, "📍 Zone: All ▼", 135, continentBtn, 5)
     f.zoneBtn = zoneBtn
     f.zoneBtnText = zoneBtn.btnText
 
     local function GetCurrentZoneList()
-        local list = { { id = "ALL", name = "Todas as Zonas", color = "ffffff" } }
+        local list = { { id = "ALL", name = "All Zones", color = "ffffff" } }
         if ToyFinder.activeContinent ~= "ALL" then
             for _, c in ipairs(Data.Continents) do
                 if c.id == ToyFinder.activeContinent and c.zones then
                     for _, z in ipairs(c.zones) do
-                        if z ~= "Todas as Zonas" then
+                        if z ~= "All Zones" then
                             table.insert(list, { id = z, name = z, color = c.color or "ffffff" })
                         end
                     end
@@ -565,16 +565,16 @@ function ToyFinderUI:CreateMainFrame()
             end
         else
             local popularZones = {
-                "Dornogal", "Ilha de Dorn", "Hallowfall", "Azj-Kahet", "O Fosso Profundo",
-                "Valdrakken", "Costas Despertas", "Planícies de Ohn'ahra", "Vastalguém",
-                "Oribos", "Revendreth", "Ardenweald", "Maldraxxus", "Bastião",
+                "Dornogal", "Isle of Dorn", "Hallowfall", "Azj-Kahet", "The Ringing Deeps",
+                "Valdrakken", "The Waking Shores", "Ohn'ahran Plains", "The Azure Span",
+                "Oribos", "Revendreth", "Ardenweald", "Maldraxxus", "Bastion",
                 "Zuldazar", "Dazar'alor", "Mechagon", "Nazjatar",
-                "Dalaran", "Suramar", "Alta Montanha",
-                "Gorgrond", "Selva de Tanaan", "Guarnição",
-                "Monte Kun-Lai", "Ilha Perene", "Vale das Flores Eternas",
-                "Coroa de Gelo", "Ulduar", "Tundra Boreana",
-                "Shattrath", "Ilha de Quel'Danas",
-                "Ventobravo", "Orgrimmar", "Tol Barad"
+                "Dalaran", "Suramar", "Highmountain",
+                "Gorgrond", "Tanaan Jungle", "Garrison",
+                "Kun-Lai Summit", "Timeless Isle", "Vale of Eternal Blossoms",
+                "Icecrown", "Ulduar", "Borean Tundra",
+                "Shattrath", "Isle of Quel'Danas",
+                "Stormwind City", "Orgrimmar", "Tol Barad"
             }
             for _, z in ipairs(popularZones) do
                 table.insert(list, { id = z, name = z, color = "00e5ff" })
@@ -584,7 +584,7 @@ function ToyFinderUI:CreateMainFrame()
     end
 
     zoneBtn:SetScript("OnClick", function(self)
-        ToyFinderUI:ToggleDropdown(self, "Zona no Mundo", GetCurrentZoneList(), ToyFinder.activeZone, function(item)
+        ToyFinderUI:ToggleDropdown(self, "Zone in World", GetCurrentZoneList(), ToyFinder.activeZone, function(item)
             ToyFinder.activeZone = item.id
             ToyFinderUI:UpdateFilterButtonLabels()
             ToyFinder:ApplyFilters()
@@ -593,14 +593,14 @@ function ToyFinderUI:CreateMainFrame()
     end)
 
     -- 4. Botão Dificuldade
-    local difficultyBtn = CreateFilterDropdownBtn(subControls, "⚡ Dificuldade: Todas ▼", 135, zoneBtn, 5)
+    local difficultyBtn = CreateFilterDropdownBtn(subControls, "⚡ Difficulty: All ▼", 135, zoneBtn, 5)
     f.difficultyBtn = difficultyBtn
     f.difficultyBtnText = difficultyBtn.btnText
 
     difficultyBtn:SetScript("OnClick", function(self)
         local counts = ToyFinderUI:GetFilterCounts()
         local items = ToyFinderUI:AddCountsToItems(Data.Difficulties, counts.difficulty, counts.total)
-        ToyFinderUI:ToggleDropdown(self, "Dificuldade de Obtenção", items, ToyFinder.activeDifficulty, function(item)
+        ToyFinderUI:ToggleDropdown(self, "Acquisition Difficulty", items, ToyFinder.activeDifficulty, function(item)
             ToyFinder.activeDifficulty = item.id
             ToyFinderUI:UpdateFilterButtonLabels()
             ToyFinder:ApplyFilters()
@@ -609,15 +609,15 @@ function ToyFinderUI:CreateMainFrame()
     end)
 
     -- 5. Botão Ordenar
-    local sortBtn = CreateFilterDropdownBtn(subControls, "🔃 Recentes ▼", 105, difficultyBtn, 5)
+    local sortBtn = CreateFilterDropdownBtn(subControls, "🔃 Newest ▼", 105, difficultyBtn, 5)
     f.sortBtn = sortBtn
     f.sortBtnText = sortBtn.btnText
 
     local sortItems = {
-        { id = "NEWEST", name = "Mais Recentes (Midnight / TWW)", color = "9d4edd" },
-        { id = "NAME", name = "Nome (A-Z)", color = "ffffff" },
-        { id = "QUALITY", name = "Qualidade (Raridade)", color = "ffd200" },
-        { id = "STATUS", name = "Em Falta Primeiro", color = "ff5252" },
+        { id = "NEWEST", name = "Newest (Midnight / TWW)", color = "9d4edd" },
+        { id = "NAME", name = "Name (A-Z)", color = "ffffff" },
+        { id = "QUALITY", name = "Quality (Rarity)", color = "ffd200" },
+        { id = "STATUS", name = "Missing First", color = "ff5252" },
     }
 
     sortBtn:SetScript("OnClick", function(self)
@@ -702,7 +702,7 @@ function ToyFinderUI:CreateMainFrame()
 
     local footerText = footer:CreateFontString(nil, "OVERLAY", "GameFontDisableSmall")
     footerText:SetPoint("LEFT", footer, "LEFT", 0, 0)
-    footerText:SetText("|cff00e5ff💡 Dica para Iniciantes:|r Clica num brinquedo para ver o guia passo a passo. Filtra por |cffffd200'Vendedores'|r para brinquedos de compra direta com ouro!")
+    footerText:SetText("|cff00e5ff💡 Beginner tip:|r Click a toy to see the step-by-step guide. Filter by |cffffd200'Vendors'|r for direct gold purchases!")
 
     -- Painel da Lista (Esquerda)
     local listContainer = CreateFrame("Frame", nil, contentArea, "BackdropTemplate")
@@ -1081,7 +1081,7 @@ function ToyFinderUI:CreateMainFrame()
 
     local waypointText = waypointBtn:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
     waypointText:SetPoint("CENTER", waypointBtn, "CENTER", 0, 0)
-    waypointText:SetText("|cffffd200📍 Ponto no Mapa /way|r  |cffffffff(TomTom)|r")
+    waypointText:SetText("|cffffd200📍 Map Waypoint /way|r  |cffffffff(TomTom)|r")
     f.waypointBtn = waypointBtn
     f.waypointText = waypointText
 
@@ -1112,7 +1112,7 @@ function ToyFinderUI:CreateMainFrame()
 
     local whBigText = whBigBtn:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
     whBigText:SetPoint("CENTER", whBigBtn, "CENTER", 0, 0)
-    whBigText:SetText("|cff00e5ff🌐 Ver no WoWhead (Guia Web / Vídeo)|r")
+    whBigText:SetText("|cff00e5ff🌐 Open on WoWhead (Web Guide / Video)|r")
 
     whBigBtn:SetScript("OnClick", function()
         if ToyFinder.selectedToy then
@@ -1168,7 +1168,7 @@ function ToyFinderUI:CreateMainFrame()
 
     local favDetailText = toggleFavBtn:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
     favDetailText:SetPoint("CENTER", toggleFavBtn, "CENTER", 0, 0)
-    favDetailText:SetText("★ Favorita")
+    favDetailText:SetText("★ Favorite")
     f.favDetailText = favDetailText
 
     toggleFavBtn:SetScript("OnClick", function()
@@ -1176,7 +1176,7 @@ function ToyFinderUI:CreateMainFrame()
             local id = ToyFinder.selectedToy.itemID
             ToyFinderDB.favorites[id] = not ToyFinderDB.favorites[id]
             ToyFinder.selectedToy.isFavorite = ToyFinderDB.favorites[id]
-            favDetailText:SetText(ToyFinder.selectedToy.isFavorite and "|cffffd200★ Nas Favoritas|r" or "★ Favorita")
+            favDetailText:SetText(ToyFinder.selectedToy.isFavorite and "|cffffd200★ In Favorites|r" or "★ Favorite")
             ToyFinderUI:UpdateRowContent(math.floor(scrollBar:GetValue()))
             PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON)
         end
@@ -1201,7 +1201,7 @@ function ToyFinderUI:CreateMainFrame()
 
     local modalTitle = modal:CreateFontString(nil, "OVERLAY", "GameFontHighlightLarge")
     modalTitle:SetPoint("TOP", modal, "TOP", 0, -16)
-    modalTitle:SetText("|cff00e5ffWoWhead - Guia & Localização|r")
+    modalTitle:SetText("|cff00e5ffWoWhead - Guide & Location|r")
 
     local modalDesc = modal:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
     modalDesc:SetPoint("TOPLEFT", modal, "TOPLEFT", 20, -48)
@@ -1321,7 +1321,7 @@ function ToyFinderUI:UpdateFilterButtonLabels()
     if not mainFrame then return end
 
     -- 1. Obtenção
-    local srcName = "Todas"
+    local srcName = "All"
     if ToyFinder.activeSource ~= "ALL" then
         local meta = Data.SourceTypes[ToyFinder.activeSource]
         srcName = meta and meta.tag or ToyFinder.activeSource
@@ -1351,8 +1351,8 @@ function ToyFinderUI:UpdateFilterButtonLabels()
     mainFrame.continentBtnText:SetText(string.format("🌍 %s ▼", contName))
 
     -- 3. Zona
-    local zoneName = "Todas"
-    if ToyFinder.activeZone ~= "ALL" and ToyFinder.activeZone ~= "Todas as Zonas" and ToyFinder.activeZone ~= "" then
+    local zoneName = "All"
+    if ToyFinder.activeZone ~= "ALL" and ToyFinder.activeZone ~= "All Zones" and ToyFinder.activeZone ~= "" then
         zoneName = ToyFinder.activeZone
         mainFrame.zoneBtn:SetBackdropBorderColor(COLORS.accentCyan.r, COLORS.accentCyan.g, COLORS.accentCyan.b, 1)
         mainFrame.zoneBtn:SetBackdropColor(0.20, 0.12, 0.32, 1)
@@ -1363,7 +1363,7 @@ function ToyFinderUI:UpdateFilterButtonLabels()
     mainFrame.zoneBtnText:SetText(string.format("📍 %s ▼", zoneName))
 
     -- 4. Dificuldade
-    local diffName = "Todas"
+    local diffName = "All"
     if ToyFinder.activeDifficulty ~= "ALL" then
         for _, d in ipairs(Data.Difficulties) do
             if d.id == ToyFinder.activeDifficulty then
@@ -1380,10 +1380,10 @@ function ToyFinderUI:UpdateFilterButtonLabels()
     mainFrame.difficultyBtnText:SetText(string.format("⚡ %s ▼", diffName))
 
     -- 5. Ordenar
-    local sortName = "Recentes"
+    local sortName = "Newest"
     if ToyFinder.sortBy == "NAME" then sortName = "Nome A-Z"
-    elseif ToyFinder.sortBy == "QUALITY" then sortName = "Qualidade"
-    elseif ToyFinder.sortBy == "STATUS" then sortName = "Em Falta"
+    elseif ToyFinder.sortBy == "QUALITY" then sortName = "Quality"
+    elseif ToyFinder.sortBy == "STATUS" then sortName = "Missing"
     end
     mainFrame.sortBtnText:SetText(string.format("🔃 %s ▼", sortName))
 end
@@ -1527,15 +1527,15 @@ function ToyFinderUI:UpdateSelectedToyDetails()
     if not toy then
         mainFrame.dIcon:SetTexture("Interface\\Icons\\INV_Misc_Toy_01")
         mainFrame.dIconBorder:SetVertexColor(1, 1, 1)
-        mainFrame.dName:SetText("Nenhum Brinquedo Selecionado")
-        mainFrame.dMeta:SetText("Clica num brinquedo à esquerda para ver o guia passo a passo e coordenadas.")
+        mainFrame.dName:SetText("No Toy Selected")
+        mainFrame.dMeta:SetText("Click a toy on the left to see the step-by-step guide and coordinates.")
         mainFrame.statusBanner:SetBackdropColor(0.1, 0.1, 0.1, 0.8)
         mainFrame.statusBannerText:SetText("-")
         mainFrame.sourceDesc:SetText(L.NO_TOY_SELECTED)
         mainFrame.effectDesc:SetText("-")
         self:UpdateSourceScroll()
         if mainFrame.waypointBtn and mainFrame.waypointText then
-            mainFrame.waypointText:SetText("|cff888888📍 Sem Coordenadas Fixas|r")
+            mainFrame.waypointText:SetText("|cff888888📍 No Fixed Coordinates|r")
             mainFrame.waypointBtn:Disable()
         end
         return
@@ -1546,8 +1546,8 @@ function ToyFinderUI:UpdateSelectedToyDetails()
     local qColor = Data.QualityColors[toy.quality] or Data.QualityColors[1]
     mainFrame.dIconBorder:SetVertexColor(qColor.r, qColor.g, qColor.b)
     mainFrame.dName:SetText(string.format("|cff%s%s|r", qColor.hex, toy.name))
-    local expStr = (toy.dbData and toy.dbData.expansion and toy.dbData.expansion ~= "") and string.format("  |  Expansão: |cff9d4edd%s|r", toy.dbData.expansion) or ""
-    mainFrame.dMeta:SetText(string.format("Item ID: |cffffd200%d|r  |  Qualidade: |cff%s%s|r%s", toy.itemID, qColor.hex, qColor.name, expStr))
+    local expStr = (toy.dbData and toy.dbData.expansion and toy.dbData.expansion ~= "") and string.format("  |  Expansion: |cff9d4edd%s|r", toy.dbData.expansion) or ""
+    mainFrame.dMeta:SetText(string.format("Item ID: |cffffd200%d|r  |  Quality: |cff%s%s|r%s", toy.itemID, qColor.hex, qColor.name, expStr))
 
     -- Banner de Status
     if toy.isCollected then
@@ -1562,70 +1562,70 @@ function ToyFinderUI:UpdateSelectedToyDetails()
 
     -- Fonte Detalhada - Guia Passo a Passo para Iniciantes
     local srcMeta = Data.SourceTypes[toy.sourceType] or Data.SourceTypes["OTHER"]
-    local difficulty = "|cff3ae374[FÁCIL / IMEDIATO]|r"
+    local difficulty = "|cff3ae374[EASY / INSTANT]|r"
     local actionGuide = ""
 
     if toy.sourceType == "VENDOR" then
-        difficulty = "|cff3ae374[FÁCIL - COMPRA DIRETA]|r"
-        actionGuide = "Basta viajares até ao vendedor e comprar com ouro ou moedas da expansão. Não requer combates difíceis!"
+        difficulty = "|cff3ae374[EASY - DIRECT PURCHASE]|r"
+        actionGuide = "Just travel to the vendor and buy it with gold or expansion currency. No difficult fights required!"
     elseif toy.sourceType == "TREASURE" then
-        difficulty = "|cff00e5ff[MÉDIO - EXPLORAÇÃO]|r"
-        actionGuide = "O brinquedo está num baú escondido ou puzzle no mapa aberto. Clica no botão /way para marcar no mapa!"
+        difficulty = "|cff00e5ff[MEDIUM - EXPLORATION]|r"
+        actionGuide = "The toy is in a hidden chest or puzzle out in the open world. Click the /way button to mark it on the map!"
     elseif toy.sourceType == "LOOT" then
-        difficulty = "|cffffb142[SORTE - DROP DE CHEFE/MONSTRO]|r"
-        actionGuide = "Tens de derrotar a criatura indicada. Pode não cair à primeira (pode exigir várias tentativas de farm)."
+        difficulty = "|cffffb142[RNG - BOSS/MOB DROP]|r"
+        actionGuide = "You must defeat the indicated creature. It may not drop on the first try (may require several farm runs)."
     elseif toy.sourceType == "QUEST" then
-        difficulty = "|cff3ae374[GARANTIDO - MISSÃO / CAMPANHA]|r"
-        actionGuide = "Recompensa garantida a 100% ao completar a missão indicada no jogo."
+        difficulty = "|cff3ae374[GUARANTEED - QUEST / CAMPAIGN]|r"
+        actionGuide = "Guaranteed 100% reward for completing the indicated quest in-game."
     elseif toy.sourceType == "ACHIEVEMENT" then
-        difficulty = "|cffc56cf0[DESAFIO - CONQUISTA]|r"
-        actionGuide = "Obtido ao completar os critérios da conquista correspondente."
+        difficulty = "|cffc56cf0[CHALLENGE - ACHIEVEMENT]|r"
+        actionGuide = "Obtained by completing the criteria of the corresponding achievement."
     elseif toy.sourceType == "EVENT" then
-        difficulty = "|cff3ae374[EVENTO TEMPORÁRIO / FERIADO]|r"
-        actionGuide = "Só pode ser obtido enquanto este evento ou feriado estiver ativo no calendário do jogo."
+        difficulty = "|cff3ae374[TIME-LIMITED EVENT / HOLIDAY]|r"
+        actionGuide = "Can only be obtained while this event or holiday is active in the game calendar."
     elseif toy.sourceType == "PROFESSION" then
-        difficulty = "|cff17c0eb[CRIAÇÃO - PROFISSÃO]|r"
-        actionGuide = "Criado através de uma profissão (ou podes encomendar na Casa de Leilões / Ordem de Serviço)."
+        difficulty = "|cff17c0eb[CRAFTED - PROFESSION]|r"
+        actionGuide = "Crafted via a profession (or order it on the Auction House / Crafting Order)."
     elseif toy.sourceType == "TRADING_POST" then
-        difficulty = "|cffe15f41[POSTO DE TROCAS]|r"
-        actionGuide = "Comprado com Moedas do Posto de Trocas (Trader's Tender) em Ventobravo ou Orgrimmar."
+        difficulty = "|cffe15f41[TRADING POST]|r"
+        actionGuide = "Bought with Trading Post currency (Trader's Tender) in Stormwind City or Orgrimmar."
     else
-        difficulty = "|cffa4b0be[OUTRO / ESPECIAL]|r"
-        actionGuide = "Consulta as informações detalhadas abaixo."
+        difficulty = "|cffa4b0be[OTHER / SPECIAL]|r"
+        actionGuide = "See the detailed information below."
     end
 
     local sourceExplanation = ""
     if toy.dbData and toy.dbData.guide and toy.dbData.guide ~= "" then
         local db = toy.dbData
         local coordStr = db.coords and string.format(" |cff00e5ff[📍 %s]|r", db.coords) or ""
-        local costStr = db.cost and string.format("\n|cffffffffCusto / Moeda:|r |cffffd200%s|r", db.cost) or ""
-        local targetStr = db.target and string.format("\n|cffffffffAlvo / NPC / Baú:|r |cffffffff%s|r", db.target) or ""
+        local costStr = db.cost and string.format("\n|cffffffffCost / Currency:|r |cffffd200%s|r", db.cost) or ""
+        local targetStr = db.target and string.format("\n|cffffffffTarget / NPC / Chest:|r |cffffffff%s|r", db.target) or ""
         
         sourceExplanation = string.format(
-            "|cffffffffDificuldade:|r %s\n" ..
-            "|cffffffffZona:|r |cffffd200%s|r%s%s%s\n\n" ..
-            "|cffffd200Guia Passo a Passo (WoWhead Integrado):|r\n|cffffffff%s|r",
+            "|cffffffffDifficulty:|r %s\n" ..
+            "|cffffffffZone:|r |cffffd200%s|r%s%s%s\n\n" ..
+            "|cffffd200Step-by-Step Guide (in-game WoWhead):|r\n|cffffffff%s|r",
             db.difficulty or difficulty,
-            db.zone or "Várias Zonas",
+            db.zone or "Various Zones",
             coordStr,
             targetStr,
             costStr,
             db.guide or ""
         )
     else
-        local cleanSource = toy.sourceText or "Fonte em verificação..."
+        local cleanSource = toy.sourceText or "Checking source..."
         local zoneStr = ""
         if toy.dbData and toy.dbData.zone and toy.dbData.zone ~= "" then
-            zoneStr = string.format("\n|cffffffffZona:|r |cffffd200%s|r", toy.dbData.zone)
+            zoneStr = string.format("\n|cffffffffZone:|r |cffffd200%s|r", toy.dbData.zone)
         end
         if toy.dbData and toy.dbData.target and toy.dbData.target ~= "" then
-            zoneStr = zoneStr .. string.format("\n|cffffffffAlvo / NPC:|r |cffffffff%s|r", toy.dbData.target)
+            zoneStr = zoneStr .. string.format("\n|cffffffffTarget / NPC:|r |cffffffff%s|r", toy.dbData.target)
         end
         sourceExplanation = string.format(
-            "|cffffffffDificuldade:|r %s%s\n" ..
-            "|cffffffffO que fazer:|r |cffffffff%s|r\n\n" ..
+            "|cffffffffDifficulty:|r %s%s\n" ..
+            "|cffffffffWhat to do:|r |cffffffff%s|r\n\n" ..
             "|cffffd200Fonte:|r %s\n" ..
-            "|cff888888Dica: Abre o WoWhead para coordenadas exatas e comentários, ou marca no mapa com o botão verde abaixo (se houver coordenadas).|r",
+            "|cff888888Tip: Open WoWhead for exact coordinates and comments, or set a map waypoint with the green button below (if coordinates exist).|r",
             difficulty, zoneStr, actionGuide, cleanSource
         )
     end
@@ -1634,12 +1634,12 @@ function ToyFinderUI:UpdateSelectedToyDetails()
     -- Atualizar Botão de Waypoint / TomTom
     if mainFrame.waypointBtn and mainFrame.waypointText then
         if toy.coords or toy.waypoint then
-            mainFrame.waypointText:SetText(string.format("|cffffd200📍 Ponto no Mapa /way|r  |cff00e5ff(%s)|r", toy.coords or "Marcar"))
+            mainFrame.waypointText:SetText(string.format("|cffffd200📍 Map Waypoint /way|r  |cff00e5ff(%s)|r", toy.coords or "Set"))
             mainFrame.waypointBtn:SetBackdropColor(0.12, 0.32, 0.22, 0.95)
             mainFrame.waypointBtn:SetBackdropBorderColor(0.23, 0.89, 0.45, 1)
             mainFrame.waypointBtn:Enable()
         else
-            mainFrame.waypointText:SetText("|cff888888📍 Sem Coordenadas Fixas|r")
+            mainFrame.waypointText:SetText("|cff888888📍 No Fixed Coordinates|r")
             mainFrame.waypointBtn:SetBackdropColor(0.1, 0.1, 0.1, 0.6)
             mainFrame.waypointBtn:SetBackdropBorderColor(0.3, 0.3, 0.3, 0.5)
             mainFrame.waypointBtn:Disable()
@@ -1647,7 +1647,7 @@ function ToyFinderUI:UpdateSelectedToyDetails()
     end
 
     -- Efeito / Descrição (Obter do Tooltip)
-    local effectText = "Informação de efeito em cache..."
+    local effectText = "Loading effect info..."
     if C_TooltipInfo and C_TooltipInfo.GetToyByItemID then
         local data = C_TooltipInfo.GetToyByItemID(toy.itemID)
         if data and data.lines then
@@ -1668,7 +1668,7 @@ function ToyFinderUI:UpdateSelectedToyDetails()
     mainFrame.effectDesc:SetText(effectText)
 
     -- Botão Favorita
-    mainFrame.favDetailText:SetText(toy.isFavorite and "|cffffd200★ Nas Favoritas|r" or "★ Favorita")
+    mainFrame.favDetailText:SetText(toy.isFavorite and "|cffffd200★ In Favorites|r" or "★ Favorite")
 
     -- Ajusta o scroll do guia ao novo conteúdo
     self:UpdateSourceScroll()
@@ -1684,7 +1684,7 @@ function ToyFinderUI:UpdateView(keepScroll)
     local stats = ToyFinder.stats
     mainFrame.progressBar:SetValue(tonumber(stats.percent) or 0)
     mainFrame.progressText:SetText(string.format(
-        "|cffffffff%d|r de |cffffffff%d|r Brinquedos Obtidos (|cff00e5ff%s%%|r)   -   |cffff5252%d em Falta|r",
+        "|cffffffff%d|r of |cffffffff%d|r Toys Collected (|cff00e5ff%s%%|r)   -   |cffff5252%d Missing|r",
         stats.collected, stats.total, stats.percent, stats.missing
     ))
 

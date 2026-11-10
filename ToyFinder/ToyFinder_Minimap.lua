@@ -89,7 +89,7 @@ function ToyFinderMinimap:CreateButton()
             if ToyFinderUI and ToyFinderUI.UpdateView then
                 ToyFinderUI:UpdateView()
             end
-            print("|cff9d4eddToyFinder:|r Filtro: " .. (ToyFinder.activeFilter == "MISSING" and "|cffff5252Em Falta|r" or "|cff3ae374Todas|r"))
+            print("|cff9d4eddToyFinder:|r Filter: " .. (ToyFinder.activeFilter == "MISSING" and "|cffff5252Missing|r" or "|cff3ae374All|r"))
             PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON)
         end,
     }
@@ -107,13 +107,13 @@ function ToyFinderMinimap:CreateButton()
         GameTooltip:AddLine(" ")
         
         local stats = ToyFinder.stats
-        GameTooltip:AddDoubleLine("Total de Brinquedos:", stats.total or 0, 1, 1, 1, 1, 0.82, 0)
-        GameTooltip:AddDoubleLine("Já Obtidos:", string.format("%d (%s%%)", stats.collected or 0, stats.percent or "0"), 1, 1, 1, 0.23, 0.89, 0.45)
-        GameTooltip:AddDoubleLine("Em Falta:", stats.missing or 0, 1, 1, 1, 1.0, 0.32, 0.32)
+        GameTooltip:AddDoubleLine("Total Toys:", stats.total or 0, 1, 1, 1, 1, 0.82, 0)
+        GameTooltip:AddDoubleLine("Collected:", string.format("%d (%s%%)", stats.collected or 0, stats.percent or "0"), 1, 1, 1, 0.23, 0.89, 0.45)
+        GameTooltip:AddDoubleLine("Missing:", stats.missing or 0, 1, 1, 1, 1.0, 0.32, 0.32)
         GameTooltip:AddLine(" ")
         GameTooltip:AddLine(L.MINIMAP_LEFT_CLICK, 0.8, 0.8, 0.8)
         GameTooltip:AddLine(L.MINIMAP_RIGHT_CLICK, 0.8, 0.8, 0.8)
-        GameTooltip:AddLine("|cffaaaaaaArrasta para mover o botão no minimapa.|r", 0.6, 0.6, 0.6)
+        GameTooltip:AddLine("|cffaaaaaaDrag to move the minimap button.|r", 0.6, 0.6, 0.6)
         GameTooltip:Show()
     end)
 
@@ -147,9 +147,9 @@ _G["ToyFinder_OnAddonCompartmentEnter"] = function(button)
     GameTooltip:AddLine(L.MINIMAP_TOOLTIP_TITLE, 0.62, 0.31, 0.94)
     GameTooltip:AddLine(" ")
     local stats = ToyFinder.stats
-    GameTooltip:AddDoubleLine("Total de Brinquedos:", stats.total or 0, 1, 1, 1, 1, 0.82, 0)
-    GameTooltip:AddDoubleLine("Já Obtidos:", string.format("%d (%s%%)", stats.collected or 0, stats.percent or "0"), 1, 1, 1, 0.23, 0.89, 0.45)
-    GameTooltip:AddDoubleLine("Em Falta:", stats.missing or 0, 1, 1, 1, 1.0, 0.32, 0.32)
+    GameTooltip:AddDoubleLine("Total Toys:", stats.total or 0, 1, 1, 1, 1, 0.82, 0)
+    GameTooltip:AddDoubleLine("Collected:", string.format("%d (%s%%)", stats.collected or 0, stats.percent or "0"), 1, 1, 1, 0.23, 0.89, 0.45)
+    GameTooltip:AddDoubleLine("Missing:", stats.missing or 0, 1, 1, 1, 1.0, 0.32, 0.32)
     GameTooltip:AddLine(" ")
     GameTooltip:AddLine("|cffffffffClique:|r Abrir / Fechar ToyFinder", 0.8, 0.8, 0.8)
     GameTooltip:Show()

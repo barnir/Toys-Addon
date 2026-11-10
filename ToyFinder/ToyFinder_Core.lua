@@ -128,7 +128,7 @@ function ToyFinder:ClassifySourceType(text)
 end
 
 function ToyFinder:ExtractToySource(itemID)
-    if not itemID then return "Fonte desconhecida", "OTHER", nil end
+    if not itemID then return "Unknown source", "OTHER", nil end
     
     -- 0. Verificar Base de Dados Integrada (guias completos primeiro, depois MassDB com fonte)
     if ToyFinderDatabase and ToyFinderDatabase.GetToyData then
@@ -193,7 +193,7 @@ function ToyFinder:ExtractToySource(itemID)
         end
     end
     
-    local finalSource = rawSourceText or "Ver no WoWhead (Drop, Vendedor ou Tesouro)"
+    local finalSource = rawSourceText or "See on WoWhead (Drop, Vendor or Treasure)"
     local sourceType = self:ClassifySourceType(finalSource)
     
     -- Salvar no cache
@@ -225,7 +225,7 @@ end
 -- GERAÇÃO E ADIÇÃO DE WAYPOINTS (TomTom / Coordenadas no Mapa)
 --------------------------------------------------------------------------------
 function ToyFinder:AddWaypoint(toy)
-    if not toy then return false, "Nenhum brinquedo selecionado" end
+    if not toy then return false, "No toy selected" end
     
     local cmd = toy.waypoint
     if not cmd and toy.zone and toy.coords then
@@ -233,21 +233,21 @@ function ToyFinder:AddWaypoint(toy)
     end
     
     if not cmd or cmd == "" then
-        return false, "Este brinquedo não tem coordenadas de mapa específicas (pode ser drop mundial ou conquista)."
+        return false, "This toy has no fixed map coordinates (it may be a world drop or achievement)."
     end
 
     -- Se o TomTom estiver carregado, define a seta de navegação imediatamente!
     local cleanArgs = cmd:gsub("^/way%s+", "")
     if SlashCmdList["TOMTOM_WAY"] then
         SlashCmdList["TOMTOM_WAY"](cleanArgs)
-        print("|cff00e5ffToyFinder [TomTom]:|r Seta criada no mapa para |cffffd200" .. (toy.name or "") .. "|r! (" .. cleanArgs .. ")")
+        print("|cff00e5ffToyFinder [TomTom]:|r Waypoint created on the map for |cffffd200" .. (toy.name or "") .. "|r! (" .. cleanArgs .. ")")
         PlaySound(SOUNDKIT.MAP_PING)
-        return true, "Ponto adicionado ao TomTom com sucesso!"
+        return true, "Waypoint added to TomTom successfully!"
     end
 
     -- Se o TomTom não estiver instalado, mostra a instrução no chat
-    print("|cff9d4eddToyFinder Coordenadas:|r |cffffd200" .. cmd .. "|r")
-    print("|cffaaaaaaDica: Se instalares o addon TomTom, esta coordenada cria automaticamente uma seta no teu ecrã!|r")
+    print("|cff9d4eddToyFinder Coordinates:|r |cffffd200" .. cmd .. "|r")
+    print("|cffaaaaaaTip: If you install the TomTom addon, this coordinate automatically creates an on-screen arrow!|r")
     return true, cmd
 end
 
@@ -255,7 +255,7 @@ end
 -- DETERMINAR CONTINENTE E ZONA DO BRINQUEDO
 --------------------------------------------------------------------------------
 function ToyFinder:DetermineContinent(toy)
-    if not toy then return "OTHER", "Várias Zonas" end
+    if not toy then return "OTHER", "Various Zones" end
     
     local textToSearch = ""
     if toy.dbData and toy.dbData.zone then
@@ -286,7 +286,7 @@ function ToyFinder:DetermineContinent(toy)
         end
     end
     
-    return "OTHER", (toy.dbData and toy.dbData.zone) or toy.zone or "Várias Zonas"
+    return "OTHER", (toy.dbData and toy.dbData.zone) or toy.zone or "Various Zones"
 end
 
 --------------------------------------------------------------------------------
@@ -314,7 +314,7 @@ end
 --------------------------------------------------------------------------------
 function ToyFinder:ScanAllToys()
     if not C_ToyBox then
-        print("|cffff0000ToyFinder Erro:|r C_ToyBox API não encontrada.")
+        print("|cffff0000ToyFinder Error:|r C_ToyBox API not found.")
         return
     end
 
@@ -356,7 +356,7 @@ function ToyFinder:ScanAllToys()
                 if C_Item and C_Item.RequestLoadItemDataByID then
                     C_Item.RequestLoadItemDataByID(itemID)
                 end
-                toyName = "Brinquedo #" .. itemID
+                toyName = "Toy #" .. itemID
             end
             
             icon = icon or "Interface\\Icons\\INV_Misc_Toy_01"
@@ -486,7 +486,7 @@ function ToyFinder:ApplyFilters()
         end
         
         local passZone = false
-        if self.activeZone == "ALL" or self.activeZone == "Todas as Zonas" or self.activeZone == "" then
+        if self.activeZone == "ALL" or self.activeZone == "All Zones" or self.activeZone == "" then
             passZone = true
         else
             local targetZone = string.lower(self.activeZone)
@@ -616,10 +616,10 @@ SlashCmdList["TOYFINDER"] = function(msg)
             end
         end
     elseif cmd == "help" or cmd == "ajuda" then
-        print("|cff9d4edd--- ToyFinder Comandos ---|r")
-        print("|cff00e5ff/tf|r ou |cff00e5ff/toyfinder|r - Abre ou fecha a janela principal.")
-        print("|cff00e5ff/tf scan|r - Força uma re-varredura da Coleção de Brinquedos.")
-        print("|cff00e5ff/tf missing|r - Abre diretamente filtrado nos Brinquedos em falta.")
+        print("|cff9d4edd--- ToyFinder Commands ---|r")
+        print("|cff00e5ff/tf|r or |cff00e5ff/toyfinder|r - Opens or closes the main window.")
+        print("|cff00e5ff/tf scan|r - Force a re-scan of the Toy Collection.")
+        print("|cff00e5ff/tf missing|r - Opens the window filtered to Missing toys.")
     else
         if ns.UI then
             ns.UI:Toggle()

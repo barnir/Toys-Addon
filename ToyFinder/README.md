@@ -65,6 +65,10 @@ O **ToyFinder** é um addon completo e moderno para World of Warcraft (preparado
 
 ---
 
+## 🌐 Idioma
+
+O addon é **100% inglês** (regra permanente em [AGENTS.md](../AGENTS.md)): UI, locales, base de dados (nomes, guias, fontes), `.toc`.
+
 ## 🗄️ Estrutura da Base de Dados
 
 O ficheiro `ToyFinder_Database.lua` tem dois níveis:

@@ -181,29 +181,29 @@ ToyFinderData.SourcePriority = {
 
 -- Cores de Qualidade de Item Padrão (WoW Standard)
 ToyFinderData.QualityColors = {
-    [0] = { hex = "9d9d9d", r = 0.62, g = 0.62, b = 0.62, name = "Pobre" },
-    [1] = { hex = "ffffff", r = 1.00, g = 1.00, b = 1.00, name = "Comum" },
-    [2] = { hex = "1eff00", r = 0.12, g = 1.00, b = 0.00, name = "Incomum" },
-    [3] = { hex = "0070dd", r = 0.00, g = 0.44, b = 0.87, name = "Raro" },
-    [4] = { hex = "a335ee", r = 0.64, g = 0.21, b = 0.93, name = "Épico" },
-    [5] = { hex = "ff8000", r = 1.00, g = 0.50, b = 0.00, name = "Lendário" },
-    [6] = { hex = "e6cc80", r = 0.90, g = 0.80, b = 0.50, name = "Artefato" },
-    [7] = { hex = "00ccff", r = 0.00, g = 0.80, b = 1.00, name = "Herança" },
+    [0] = { hex = "9d9d9d", r = 0.62, g = 0.62, b = 0.62, name = "Poor" },
+    [1] = { hex = "ffffff", r = 1.00, g = 1.00, b = 1.00, name = "Common" },
+    [2] = { hex = "1eff00", r = 0.12, g = 1.00, b = 0.00, name = "Uncommon" },
+    [3] = { hex = "0070dd", r = 0.00, g = 0.44, b = 0.87, name = "Rare" },
+    [4] = { hex = "a335ee", r = 0.64, g = 0.21, b = 0.93, name = "Epic" },
+    [5] = { hex = "ff8000", r = 1.00, g = 0.50, b = 0.00, name = "Legendary" },
+    [6] = { hex = "e6cc80", r = 0.90, g = 0.80, b = 0.50, name = "Artifact" },
+    [7] = { hex = "00ccff", r = 0.00, g = 0.80, b = 1.00, name = "Heirloom" },
 }
 
 -- Base de dados inicial de referência (para carregamento instantâneo de Toys famosas e recentes)
 ToyFinderData.PreloadedSources = {
     -- Midnight / The War Within / Dragonflight / Clássicos
-    [224449] = { source = "Vendedor: Alunira / Dornogal", type = "VENDOR", zone = "Ilha de Dorn" },
-    [221966] = { source = "Tesouro: Baú de Joias em Azj-Kahet", type = "TREASURE", zone = "Azj-Kahet" },
-    [219387] = { source = "Saque: Chefe de Raide / Palácio Nerub-ar", type = "LOOT", zone = "Palácio Nerub-ar" },
-    [219302] = { source = "Missão: A Convocação da Guarda", type = "QUEST", zone = "Hallowfall" },
-    [194885] = { source = "Tesouro: Baú Arcano de Valdrakken", type = "TREASURE", zone = "Valdrakken" },
-    [198267] = { source = "Vendedor: Catalogador Jakes", type = "VENDOR", zone = "Costas Despertas" },
+    [224449] = { source = "Vendedor: Alunira / Dornogal", type = "VENDOR", zone = "Isle of Dorn" },
+    [221966] = { source = "Treasure: Jewel Chest in Azj-Kahet", type = "TREASURE", zone = "Azj-Kahet" },
+    [219387] = { source = "Loot: Raid Boss / Nerub-ar Palace", type = "LOOT", zone = "Nerub-ar Palace" },
+    [219302] = { source = "Quest: The Call of the Guard", type = "QUEST", zone = "Hallowfall" },
+    [194885] = { source = "Treasure: Arcane Chest in Valdrakken", type = "TREASURE", zone = "Valdrakken" },
+    [198267] = { source = "Vendedor: Catalogador Jakes", type = "VENDOR", zone = "The Waking Shores" },
     [129149] = { source = "Vendedor: Jepetto Joybuzz (Dalaran)", type = "VENDOR", zone = "Dalaran" },
-    [133543] = { source = "Vendedor: Lavador de Iaque Portátil", type = "VENDOR", zone = "Pandária" },
-    [128807] = { source = "Saque: Moeda da Fortuna / Chefe Raro", type = "LOOT", zone = "Tanaan" },
-    [118938] = { source = "Tesouro: Cofre Perdido de Draenor", type = "TREASURE", zone = "Gorgrond" },
+    [133543] = { source = "Vendor: Portable Yak Washer", type = "VENDOR", zone = "Pandaria" },
+    [128807] = { source = "Loot: Coin of Many Faces / Rare Boss", type = "LOOT", zone = "Tanaan" },
+    [118938] = { source = "Treasure: Lost Cache of Draenor", type = "TREASURE", zone = "Gorgrond" },
 }
 
 -- Continentes e Expansões para Filtro Avançado
@@ -214,23 +214,23 @@ ToyFinderData.Continents = {
         name = "Khaz Algar (Midnight / TWW)",
         short = "Khaz Algar",
         color = "9d4edd",
-        zones = { "Todas as Zonas", "Dornogal", "Ilha de Dorn", "Hallowfall", "Azj-Kahet", "O Fosso Profundo", "Palácio Nerub-ar" },
+        zones = { "All Zones", "Dornogal", "Isle of Dorn", "Hallowfall", "Azj-Kahet", "The Ringing Deeps", "Nerub-ar Palace" },
         patterns = { "khaz algar", "dornogal", "dorn", "hallowfall", "azj-kahet", "azj kahet", "fosso profundo", "ringing deeps", "nerub-ar", "alunira", "midnight", "lamplighter" }
     },
     {
         id = "DRAGON_ISLES",
-        name = "Ilhas do Dragão (Dragonflight)",
-        short = "Ilhas Dragão",
+        name = "Dragon Isles (Dragonflight)",
+        short = "Dragon Isles",
         color = "e55039",
-        zones = { "Todas as Zonas", "Valdrakken", "Costas Despertas", "Planícies de Ohn'ahra", "Vastalguém", "Thaldraszus", "Caverna Zaralek", "Sonho Esmeralda" },
+        zones = { "All Zones", "Valdrakken", "The Waking Shores", "Ohn'ahran Plains", "The Azure Span", "Thaldraszus", "Zaralek Cavern", "Emerald Dream" },
         patterns = { "dragon isles", "ilhas do dragão", "valdrakken", "costas despertas", "waking shores", "ohn'ahra", "vastalguém", "azure span", "thaldraszus", "zaralek", "emerald dream", "sonho esmeralda", "iskaara", "maruukai" }
     },
     {
         id = "SHADOWLANDS",
-        name = "Terras Sombrias (Shadowlands)",
+        name = "Shadowlands",
         short = "Shadowlands",
         color = "4a69bd",
-        zones = { "Todas as Zonas", "Oribos", "Bastião", "Maldraxxus", "Ardenweald", "Revendreth", "A Gorja", "Korthia", "Zereth Mortis" },
+        zones = { "All Zones", "Oribos", "Bastion", "Maldraxxus", "Ardenweald", "Revendreth", "The Maw", "Korthia", "Zereth Mortis" },
         patterns = { "shadowlands", "terras sombrias", "oribos", "bastião", "bastion", "maldraxxus", "ardenweald", "revendreth", "gorja", "maw", "korthia", "zereth mortis", "torghast" }
     },
     {
@@ -238,15 +238,15 @@ ToyFinderData.Continents = {
         name = "Zandalar & Kul Tiras (BfA)",
         short = "BfA",
         color = "0a3d62",
-        zones = { "Todas as Zonas", "Dazar'alor", "Zuldazar", "Nazmir", "Vol'dun", "Tiragarde", "Drustvar", "Vale Cantonegrante", "Nazjatar", "Mechagon" },
+        zones = { "All Zones", "Dazar'alor", "Zuldazar", "Nazmir", "Vol'dun", "Tiragarde Sound", "Drustvar", "Stormsong Valley", "Nazjatar", "Mechagon" },
         patterns = { "zandalar", "kul tiras", "dazar'alor", "zuldazar", "nazmir", "vol'dun", "tiragarde", "drustvar", "stormsong", "cantonegrante", "nazjatar", "mechagon", "boralus" }
     },
     {
         id = "BROKEN_ISLES",
-        name = "Ilhas Partidas (Legion)",
+        name = "Broken Isles (Legion)",
         short = "Legion",
         color = "78e08f",
-        zones = { "Todas as Zonas", "Dalaran (Legion)", "Azsuna", "Val'sharah", "Alta Montanha", "Trommheim", "Suramar", "Costa Partida", "Argus" },
+        zones = { "All Zones", "Dalaran (Legion)", "Azsuna", "Val'sharah", "Highmountain", "Stormheim", "Suramar", "Broken Shore", "Argus" },
         patterns = { "ilhas partidas", "broken isles", "dalaran:legion", "dalaran (legion)", "dalaran – legion", "azsuna", "val'sharah", "highmountain", "altamontanha", "stormheim", "trommheim", "suramar", "broken shore", "costa partida", "argus", "mac'aree" }
     },
     {
@@ -254,39 +254,39 @@ ToyFinderData.Continents = {
         name = "Draenor (Warlords)",
         short = "Draenor",
         color = "b71540",
-        zones = { "Todas as Zonas", "Guarnição", "Selva de Tanaan", "Gorgrond", "Talador", "Picos de Arak", "Serra Fogofrio", "Vale da Lua Negra" },
+        zones = { "All Zones", "Garrison", "Tanaan Jungle", "Gorgrond", "Talador", "Spires of Arak", "Frostfire Ridge", "Shadowmoon Valley" },
         patterns = { "draenor", "guarnição", "garrison", "tanaan", "gorgrond", "talador", "spires of arak", "picos de arak", "frostfire", "fogofrio", "shadowmoon valley", "lua negra" }
     },
     {
         id = "PANDARIA",
-        name = "Pandária (Mists of Pandaria)",
-        short = "Pandária",
+        name = "Pandaria (Mists of Pandaria)",
+        short = "Pandaria",
         color = "079992",
-        zones = { "Todas as Zonas", "Floresta de Jade", "Vale dos Quatro Ventos", "Monte Kun-Lai", "Estepes de Taulong", "Ermos do Medo", "Vale das Flores Eternas", "Ilha Perene" },
+        zones = { "All Zones", "The Jade Forest", "Valley of the Four Winds", "Kun-Lai Summit", "Townlong Steppes", "Dread Wastes", "Vale of Eternal Blossoms", "Timeless Isle" },
         patterns = { "pandária", "pandaria", "floresta de jade", "jade forest", "four winds", "quatro ventos", "kun-lai", "townlong", "taulong", "dread wastes", "ermos do medo", "eternal blossoms", "flores eternas", "timeless isle", "ilha perene" }
     },
     {
         id = "NORTHREND",
-        name = "Nortúndria (WotLK)",
-        short = "Nortúndria",
+        name = "Northrend (WotLK)",
+        short = "Northrend",
         color = "82ccdd",
-        zones = { "Todas as Zonas", "Dalaran (Northrend)", "Tundra Boreana", "Fiorde Uivante", "Colinas Pardas", "Zul'Drak", "Bacia Sholazar", "Picos Tempestuosos", "Coroa de Gelo", "Ulduar" },
+        zones = { "All Zones", "Dalaran (Northrend)", "Borean Tundra", "Howling Fjord", "Grizzly Hills", "Zul'Drak", "Sholazar Basin", "The Storm Peaks", "Icecrown", "Ulduar" },
         patterns = { "nortúndria", "northrend", "dalaran", "borean tundra", "tundra boreana", "howling fjord", "fiorde uivante", "grizzly hills", "colinas pardas", "zul'drak", "sholazar", "storm peaks", "coroa de gelo", "icecrown", "ulduar", "cristálgida" }
     },
     {
         id = "OUTLAND",
-        name = "Terralém (The Burning Crusade)",
-        short = "Terralém",
+        name = "Outland (The Burning Crusade)",
+        short = "Outland",
         color = "38ada9",
-        zones = { "Todas as Zonas", "Shattrath", "Península do Fogo do Inferno", "Pântano Zangar", "Floresta Terokkar", "Nagrand", "Montanhas da Lâmina Afiada", "Ilha de Quel'Danas" },
+        zones = { "All Zones", "Shattrath", "Hellfire Peninsula", "Zangarmarsh", "Terokkar Forest", "Nagrand", "Blade's Edge Mountains", "Isle of Quel'Danas" },
         patterns = { "terralém", "outland", "shattrath", "hellfire", "fogo do inferno", "zangarmarsh", "terokkar", "nagrand", "blade's edge", "lâmina afiada", "netherstorm", "quel'danas", "quel danas" }
     },
     {
         id = "EASTERN_KINGDOMS",
-        name = "Reinos do Leste (Classic / Cata)",
-        short = "Reinos do Leste",
+        name = "Eastern Kingdoms (Classic / Cata)",
+        short = "Eastern Kingdoms",
         color = "f6b93b",
-        zones = { "Todas as Zonas", "Ventobravo", "Altaforja", "Garganta de Fogo", "Selva do Espinhaço", "Terras Pestilentas", "Tol Barad", "Pântano Vulpino", "Stratholme" },
+        zones = { "All Zones", "Stormwind City", "Ironforge", "Searing Gorge", "Stranglethorn Vale", "Plaguelands", "Tol Barad", "Dustwallow Marsh", "Stratholme" },
         patterns = { "reinos do leste", "eastern kingdoms", "stormwind", "ventobravo", "ironforge", "altaforja", "stranglethorn", "espinhaço", "plaguelands", "pestilentas", "tol barad", "stratholme", "scholomance", "shadowfang", "theramore" }
     },
     {
@@ -294,24 +294,24 @@ ToyFinderData.Continents = {
         name = "Kalimdor (Classic / Cata)",
         short = "Kalimdor",
         color = "e58e26",
-        zones = { "Todas as Zonas", "Orgrimmar", "Valesfíngie", "Baldios", "Tanaris", "Feralas", "Silithus", "Monte Hyjal", "Cratera de Un'Goro", "Dire Maul" },
+        zones = { "All Zones", "Orgrimmar", "Ashenvale", "The Barrens", "Tanaris", "Feralas", "Silithus", "Mount Hyjal", "Un'Goro Crater", "Dire Maul" },
         patterns = { "kalimdor", "orgrimmar", "durotar", "barrens", "baldios", "tanaris", "feralas", "silithus", "hyjal", "un'goro", "dire maul", "mulgore", "teldrassil", "dustwallow" }
     },
     {
         id = "OTHER",
-        name = "Outras / Várias Zonas",
+        name = "Outras / Various Zones",
         short = "Outras",
         color = "a4b0be"
     }
 }
 
--- Filtros de Dificuldade de Obtenção
+-- Filtros de Acquisition Difficulty
 ToyFinderData.Difficulties = {
-    { id = "ALL", name = "Todas as Dificuldades", short = "Dificuldade: Todas", color = "ffffff" },
-    { id = "EASY", name = "🟢 Fácil / Compra Direta (Vendedor)", short = "🟢 Fácil", color = "3ae374" },
-    { id = "QUEST", name = "🟢 Garantido (Missão / História)", short = "🟢 Missão", color = "ffb142" },
-    { id = "EXPLORE", name = "🟡 Exploração (Tesouro / Baú)", short = "🟡 Tesouro", color = "00e5ff" },
-    { id = "FARM", name = "🟠 Sorte / Farm (Saque / Chefe)", short = "🟠 Drop/Chefe", color = "ff5252" },
-    { id = "EVENT", name = "🔵 Evento Mundial / Feriado", short = "🔵 Evento", color = "c56cf0" },
-    { id = "OTHER", name = "⚪ Outros / Conquistas / Profissões", short = "⚪ Outros", color = "a4b0be" },
+    { id = "ALL", name = "All Difficulties", short = "Difficulty: All", color = "ffffff" },
+    { id = "EASY", name = "🟢 Easy / Direct Purchase (Vendor)", short = "🟢 Easy", color = "3ae374" },
+    { id = "QUEST", name = "🟢 Guaranteed (Quest / Story)", short = "🟢 Quest", color = "ffb142" },
+    { id = "EXPLORE", name = "🟡 Exploration (Treasure / Chest)", short = "🟡 Treasure", color = "00e5ff" },
+    { id = "FARM", name = "🟠 RNG / Farm (Loot / Boss)", short = "🟠 Drop/Boss", color = "ff5252" },
+    { id = "EVENT", name = "🔵 World Event / Holiday", short = "🔵 Event", color = "c56cf0" },
+    { id = "OTHER", name = "⚪ Other / Achievements / Professions", short = "⚪ Other", color = "a4b0be" },
 }
