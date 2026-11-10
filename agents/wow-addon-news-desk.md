@@ -17,6 +17,7 @@ Report what changed recently in the addon-relevant API surface: patch notes, hot
 2. Blizzard blue posts / official forums — "Combat Philosophy and Addon Disarmament in Midnight" and follow-ups.
 3. Wowhead news (API changes, hotfixes).
 4. Community: r/wowaddondev, GitHub activity on Gethe/wow-ui-source, wago.tools.
+5. **Guide repo watch**: commits to [Amadeus-/WoWAddonDevGuide](https://github.com/Amadeus-/WoWAddonDevGuide) — its `README.md` "Version History" is the KB update log, and `12_API_Migration_Guide.md` / `12a_Secret_Safe_APIs.md` get updated per patch. New guide versions usually mean new patch API changes.
 
 ## Output format
 

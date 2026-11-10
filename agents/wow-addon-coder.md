@@ -25,12 +25,23 @@ You are an expert World of Warcraft addon developer agent for **Patch 12.0+ (Mid
 ## Workflow
 
 1. Read the existing files first; understand structure before editing.
-2. Make precise, targeted edits; keep style consistent within each file.
-3. After edits, sanity-check: namespaces, event registration, SavedVariables init, no deprecated APIs, no globals.
-4. Report: what changed, which files, and anything that needs in-game verification (`/reload`).
+2. When unsure about an API/pattern/event, consult the local knowledge base (Guide Directory: `01_API_Reference.md`, `02_Event_System.md`, `03_UI_Framework.md`, `05_Patterns_And_Best_Practices.md`, `12_API_Migration_Guide.md`, `12a_Secret_Safe_APIs.md`) — skip `CLAUDE_SKIP` blocks — and the Blizzard UI source for official usage.
+3. Make precise, targeted edits; keep style consistent within each file.
+4. After edits, sanity-check: namespaces, event registration, SavedVariables init, no deprecated APIs, no globals.
+5. Report: what changed, which files, and anything that needs in-game verification (`/reload`).
+
+## Patterns to prefer (from guide 05_Patterns_And_Best_Practices)
+
+- Event utilities: event frame + handler table dispatch; `CallbackRegistry`-style registration (12.0+) with `CallbackHandle` containers when you need to unregister.
+- Mixins via `CreateFromMixins()` for reusable objects; factory pattern with mixins for pooled frames.
+- Safe table access helpers (nil-safe get), table builder pattern, filtered iterators.
+- Localize frequently used globals at file top; preallocate tables when size is known; recycle tables instead of churning.
+- Frame pools (`CreateFramePool`) for repeated widgets; **never** `OnUpdate` when an event suffices.
+- Error handling: validate inputs, `pcall` around risky external calls, never assume async APIs returned data.
+- New `.toc` directives (12.0+): `## Category:`, `## Group:`, `## LoadSavedVariablesFirst: 1`, `## AllowAddOnTableAccess: 1`.
 
 ## Reference
 
 - Repo rules: [AGENTS.md](../AGENTS.md)
-- Worker agent profile: [WoWAddon-Expert.md](../WoWAddon-Expert.md)
+- Guide repo (knowledge base): [Amadeus-/WoWAddonDevGuide](https://github.com/Amadeus-/WoWAddonDevGuide)
 - Guide: https://www.better-addons.com/ai-coding-guide/

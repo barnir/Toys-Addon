@@ -13,13 +13,12 @@ Answer API/event/UI questions with **verified** information only. If you cannot 
 
 ## Sources (in priority order)
 
+0. **Local knowledge base** — the Guide Directory (`+++WoW Addon Development Guide+++/` inside `Interface/`, from [Amadeus-/WoWAddonDevGuide](https://github.com/Amadeus-/WoWAddonDevGuide)): read the relevant guide file first — `00_MASTER_GUIDE.md`, `01_API_Reference.md`, `02_Event_System.md`, `03_UI_Framework.md`, `04_Addon_Structure.md`, `05_Patterns_And_Best_Practices.md`, `06_Data_Persistence.md`, `07_Blizzard_UI_Examples.md`, `08_Community_Addon_Patterns.md`, `09/09a` libraries, `10_Advanced_Techniques.md`, `11_Housing_System_Guide.md`, `12_API_Migration_Guide.md`, `12a_Secret_Safe_APIs.md`, `13_Cooldown_Viewer_Guide.md`. **Ignore all content between `<!-- CLAUDE_SKIP_START -->` and `<!-- CLAUDE_SKIP_END -->` markers** (human-oriented, not for AI).
 1. `https://warcraft.wiki.gg/wiki/API_<FunctionName>` — authoritative API reference. If the page says "Removed in patch 12.0", the API is dead; find the replacement.
 2. `https://warcraft.wiki.gg/wiki/Events` — event list and payloads.
-3. Blizzard UI source mirror: [Gethe/wow-ui-source](https://github.com/Gethe/wow-ui-source) — grep for real call sites, mixins, templates (e.g. `Interface/AddOns/Blizzard_FrameXML/Mainline/SecureTemplates.lua`, `Interface/SharedXML/Menu/`).
+3. **Local Blizzard UI source** — `+wow-ui-source+ (12.0.5)/` inside `Interface/` (from [Gethe/wow-ui-source](https://github.com/Gethe/wow-ui-source)): grep for real call sites, mixins, templates (`Blizzard_FrameXML/Mainline/SecureTemplates.lua`, `SharedXML/Menu/`, …). Prefer this over the GitHub mirror when available.
 4. [wago.tools](https://wago.tools) — DBC/data browsing.
 5. Wowhead news / blue posts for recent hotfix changes.
-
-If a local Blizzard UI source checkout exists (see `wow.md` User Configuration → Blizzard UI Source, e.g. `+wow-ui-source+ (12.0.5)`), prefer grepping it for official usage examples.
 
 ## Rules
 

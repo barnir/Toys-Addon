@@ -75,11 +75,15 @@ then `info.name`, `info.iconID`. Do NOT unpack multiple returns from table-retur
 ## Notes: Description
 ## Author: AuthorName
 ## Version: 1.0.0
+## Category: Miscellaneous        (12.0+)
 ## SavedVariables: AddonNameDB
 ## IconTexture: Interface\Icons\INV_Misc_QuestionMark
 Core.lua
 Modules/Module1.lua
 ```
+
+New `.toc` directives (12.0+): `## Category:`, `## Group:`, `## LoadSavedVariablesFirst: 1`,
+`## AllowAddOnTableAccess: 1`.
 
 ## Common patterns
 
@@ -137,10 +141,17 @@ Claude Code agent definitions, whose rules are adopted below:
 The agent config files ([wow.md](wow.md), [WoWAddon-Expert.md](WoWAddon-Expert.md)) point at
 two folders inside `Interface/` on the WoW machine (user config: `D:\Games\World of Warcraft\_retail_\Interface\`):
 
-- **Guide Directory** — `+++WoW Addon Development Guide+++/`: the knowledge base the agent
-  reads (`00_MASTER_GUIDE.md` … `13_Cooldown_Viewer_Guide.md`, API/event/UI references).
-  Source: [Amadeus-/WoWAddonDevGuide](https://github.com/Amadeus-/WoWAddonDevGuide) — the same
-  repo that ships the Claude agent + `/wow` command. Put the guide files there.
+- **Guide Directory** — `+++WoW Addon Development Guide+++/`: the knowledge base agents
+  read before answering. Source: [Amadeus-/WoWAddonDevGuide](https://github.com/Amadeus-/WoWAddonDevGuide/tree/master)
+  (put the guide files there). Contents:
+  `00_MASTER_GUIDE.md` (overview + 5-min tutorial), `01_API_Reference.md`, `02_Event_System.md`,
+  `03_UI_Framework.md`, `04_Addon_Structure.md`, `05_Patterns_And_Best_Practices.md`,
+  `06_Data_Persistence.md`, `07_Blizzard_UI_Examples.md`, `08_Community_Addon_Patterns.md`,
+  `09_Addon_Libraries_Guide.md`, `09a_Ace3_Library_Guide.md`, `10_Advanced_Techniques.md`,
+  `11_Housing_System_Guide.md`, `12_API_Migration_Guide.md`, `12a_Secret_Safe_APIs.md`,
+  `13_Cooldown_Viewer_Guide.md`, plus `README.md` (index + version history).
+  **When reading these files, ignore everything between `<!-- CLAUDE_SKIP_START -->` and
+  `<!-- CLAUDE_SKIP_END -->`** (human-oriented content).
 - **Blizzard UI Source** — `+wow-ui-source+ (12.0.5)/`: Blizzard's official UI source code
   (FrameXML/SharedXML/AddOns) used as reference for official patterns.
   Source: [Gethe/wow-ui-source](https://github.com/Gethe/wow-ui-source) (git mirror, branch
@@ -151,3 +162,8 @@ two folders inside `Interface/` on the WoW machine (user config: `D:\Games\World
 - Mixin pattern (`MyAddonMixin` with `OnLoad`/`OnEvent` dispatch via `self[event]`)
   is the modern Blizzard style; this repo's `ns` namespace pattern is equivalent.
 - Indentation: keep consistent within each file (existing ToyFinder files use 4 spaces).
+- Patterns to prefer (guide `05_Patterns_And_Best_Practices.md`): CallbackRegistry-style
+  event registration with handle containers (12.0+), mixins via `CreateFromMixins()`,
+  safe/nil-safe table access, table builders, filtered iterators, localize hot globals,
+  table preallocation, table recycling, `CreateFramePool` for repeated widgets,
+  input validation + `pcall` around external calls, never assume async APIs returned data.
