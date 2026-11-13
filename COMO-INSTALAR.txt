@@ -77,5 +77,5 @@ COMO USAR DENTRO DO JOGO
 
    - O botão WoWhead continua lá se quiseres ver guias de vídeo ou fóruns.
 
-   - BASE DE DADOS: cobre 1.181 IDs únicos (296 guias completos com GPS + 938 entradas MassDB com fonte/zona/NPC/expansão) — v1.9.3
+   - BASE DE DADOS: cobre 1.181 IDs únicos (306 guias completos com GPS + 927 entradas MassDB com fonte/zona/NPC/expansão) — v1.9.3
      guias completos passo a passo com coordenadas (badge 📖).
