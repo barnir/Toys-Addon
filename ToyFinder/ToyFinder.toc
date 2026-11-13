@@ -2,7 +2,7 @@
 ## Title: |cff9d4eddToy|r|cff00e5ffFinder|r |cffffd200(Midnight)|r
 ## Notes: Shows every toy in the game, whether you already have it or not, where to get it (Vendors, Loot, Treasures) and direct WoWhead links!
 ## Author: Francisco
-## Version: 1.9.2
+## Version: 1.9.3
 ## Category: Miscellaneous
 ## X-Website: https://github.com/barnir/Toys-Addon
 ## SavedVariables: ToyFinderDB

@@ -2,7 +2,7 @@
 
 Objetivo: **cobertura máxima de toys com a melhor informação possível de "como obter e onde ir"** (fonte, zona, NPC/alvo, custo, expansão, coordenadas GPS e guia passo a passo), 100% em inglês, verificada e maintenível.
 
-Estado atual (v1.8.0): **206 guias completos** (`Entries`) + **1.009 entradas MassDB** = **1.151 IDs únicos**.
+Estado atual (v1.9.3): **296 guias completos** (`Entries`) + **938 entradas MassDB** = **1.181 IDs únicos** (v1.9.3: +32 verified guides TWW/Dragonflight vendors & treasures).
 
 ---
 

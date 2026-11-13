@@ -46,7 +46,7 @@ O **ToyFinder** é um addon completo e moderno para World of Warcraft (preparado
      - Repõe todas as seleções no estado inicial com 1 clique!
 
 4. **Base de Dados Offline Integrada & TomTom (/way)**:
-   - **Mais de 1.150 IDs únicos cobertos (206 full GPS guides + 971 MassDB entries);
+   - **1.181 IDs únicos cobertos (296 full GPS guides + 938 MassDB entries, v1.9.3);
    - As entradas da base de dados em massa são geradas a partir de dados da comunidade (ToyBoxEnhanced + EliteGrindLab) e as guias completos são curadas manualmente e com agentes de pesquisa que verificam fontes no WoWhead/WowDB/Wowpedia.
    - Inclui coordenadas GPS precisas e botão `[ 📍 Ponto no Mapa /way (TomTom) ]` que cria uma seta no ecrã automaticamente!
    - O painel do guia tem **barra de rolagem**: guias longos nunca ficam cortados.
@@ -76,7 +76,7 @@ A estratégia completa (fontes, pipeline, agentes, quality gates, roadmap) está
 O ficheiro `ToyFinder_Database.lua` tem dois níveis:
 
 1. **`Entries`** — guias completos (com `guide`, `coords`, `waypoint`, `cost`, `target`), escritos à mão ou por agentes de pesquisa com verificação de fontes. Estas toys mostram o badge **📖** na lista e o botão verde de GPS ativo.
-2. **`MassDB`** — entradas compactas geradas automaticamente (`n` = nome, `t` = tipo de fonte, `s` = texto da fonte, `z` = zona, `g` = NPC) cobrindo ~1.080 toys. Servem para filtros, pesquisa e painel de detalhes; o guia completo pode ser adicionado a qualquer uma movendo-a para `Entries`.
+2. **`MassDB`** — entradas compactas geradas automaticamente (`n` = nome, `t` = tipo de fonte, `s` = texto da fonte, `z` = zona, `g` = NPC) cobrindo ~938 toys. Servem para filtros, pesquisa e painel de detalhes; o guia completo pode ser adicionado a qualquer uma movendo-a para `Entries`.
 
 Para expandir: adiciona entradas a `Entries` (guias completos) ou regenera a `MassDB` a partir dos dados da comunidade (pipeline: `toys.db.lua` do ToyBoxEnhanced + `/data/wow/toys.json` da EliteGrindLab, com join por nome). A documentação (este README e `COMO-INSTALAR.txt`) deve ser atualizada em conjunto com qualquer alteração.
 
